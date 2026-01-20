@@ -3,6 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Математика для школьников 1-7 классов по программе Министерства образования РК">
+    <meta name="theme-color" content="#0077b6">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Математика РК">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icon-192.png">
     <title>Математика - Казахстан</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -49,10 +56,17 @@
         .result-summary { background: linear-gradient(135deg, #e0f7fa 0%, #b2ebf2 100%); padding: 25px; border-radius: 12px; text-align: center; font-size: 1.3em; margin-bottom: 20px; }
         .button-group { display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; margin: 20px 0; }
         .hidden { display: none; }
+        .install-prompt { display: none; background: linear-gradient(135deg, #48bb78 0%, #38a169 100%); color: white; padding: 15px; border-radius: 10px; margin-bottom: 20px; text-align: center; }
+        .install-btn { background: white; color: #38a169; border: none; padding: 10px 20px; border-radius: 5px; font-weight: bold; cursor: pointer; margin-top: 10px; }
     </style>
 </head>
 <body>
     <div class="container">
+        <div id="installPrompt" class="install-prompt">
+            <div>📱 Установите приложение на главный экран для удобного доступа!</div>
+            <button class="install-btn" onclick="installApp()">Установить приложение</button>
+        </div>
+        
         <div class="header">
             <h1>🎓 Математика</h1>
             <p class="subtitle">Программа Министерства образования РК</p>
@@ -126,6 +140,36 @@
         let currentTopic = '';
         let currentQuestions = [];
         let studentResults = {};
+        let deferredPrompt;
+
+        // PWA Installation
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            document.getElementById('installPrompt').style.display = 'block';
+        });
+        
+        function installApp() {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        console.log('Приложение установлено');
+                    }
+                    deferredPrompt = null;
+                    document.getElementById('installPrompt').style.display = 'none';
+                });
+            }
+        }
+        
+        // Service Worker Registration
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js').then(function(registration) {
+                console.log('Service Worker зарегистрирован');
+            }).catch(function(err) {
+                console.log('Ошибка регистрации Service Worker:', err);
+            });
+        }
 
         const topics = {
             1: ['Числа от 1 до 10', 'Сложение в пределах 10', 'Вычитание в пределах 10', 'Числа от 11 до 20', 'Сравнение чисел', 'Состав чисел', 'Задачи на логику'],
