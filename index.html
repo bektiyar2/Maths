@@ -3,416 +3,405 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Математика для школьников 1-7 классов по программе Министерства образования РК">
-    <meta name="theme-color" content="#0077b6">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Математика">
-    <link rel="manifest" href="manifest.json">
-    <link rel="apple-touch-icon" href="icon-192.png">
     <title>Математика - Казахстан</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #00a8cc 0%, #0077b6 50%, #023e8a 100%);
-            min-height: 100vh;
-            padding: 20px;
-        }
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-        }
-        .header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        h1 {
-            color: #0077b6;
-            font-size: 2.2em;
-            margin-bottom: 10px;
-        }
-        .subtitle {
-            color: #666;
-            font-size: 1.1em;
-        }
-        .install-prompt {
-            display: none;
-            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
-            color: white;
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-        .install-btn {
-            background: white;
-            color: #38a169;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            font-weight: bold;
-            cursor: pointer;
-            margin-top: 10px;
-        }
-        .stats-bar {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 15px;
-            margin-bottom: 30px;
-            padding: 20px;
-            background: linear-gradient(135deg, #e0f7fa 0%, #b2ebf2 100%);
-            border-radius: 12px;
-        }
-        .stat-item {
-            text-align: center;
-        }
-        .stat-value {
-            font-size: 1.8em;
-            font-weight: bold;
-            color: #0077b6;
-        }
-        .stat-label {
-            font-size: 0.9em;
-            color: #666;
-            margin-top: 5px;
-        }
-        .achievements {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin: 20px 0;
-            flex-wrap: wrap;
-        }
-        .achievement {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2em;
-            background: #e0e0e0;
-            transition: all 0.3s;
-        }
-        .achievement.unlocked {
-            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
-            animation: pulse 2s infinite;
-        }
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-        }
-        .grade-selection {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-            gap: 15px;
-            margin-bottom: 30px;
-        }
-        .grade-btn {
-            padding: 20px;
-            border: 3px solid #0077b6;
-            background: white;
-            color: #0077b6;
-            border-radius: 12px;
-            cursor: pointer;
-            font-size: 1.2em;
-            font-weight: bold;
-            transition: all 0.3s;
-        }
-        .grade-btn:hover {
-            background: #0077b6;
-            color: white;
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0,119,182,0.3);
-        }
-        .topic-selection {
-            display: none;
-        }
-        .topic-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-        .topic-btn {
-            padding: 15px;
-            border: 2px solid #023e8a;
-            background: white;
-            color: #023e8a;
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 1em;
-            transition: all 0.3s;
-            text-align: left;
-        }
-        .topic-btn:hover {
-            background: #023e8a;
-            color: white;
-            transform: translateX(5px);
-        }
-        .quiz-area {
-            display: none;
-        }
-        .progress-bar {
-            width: 100%;
-            height: 30px;
-            background: #e0e0e0;
-            border-radius: 15px;
-            overflow: hidden;
-            margin-bottom: 20px;
-        }
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #00a8cc 0%, #0077b6 100%);
-            transition: width 0.5s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
-        }
-        .question-card {
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-            padding: 30px;
-            border-radius: 15px;
-            margin-bottom: 25px;
-            border-left: 5px solid #0077b6;
-        }
-        .question-type {
-            color: #0077b6;
-            font-size: 0.9em;
-            margin-bottom: 10px;
-            font-weight: bold;
-        }
-        .question-text {
-            font-size: 1.4em;
-            color: #333;
-            margin-bottom: 15px;
-            line-height: 1.6;
-        }
-        .answer-input {
-            width: 100%;
-            padding: 15px;
-            font-size: 1.3em;
-            border: 3px solid #ddd;
-            border-radius: 10px;
-            margin-bottom: 15px;
-            text-align: center;
-            transition: all 0.3s;
-        }
-        .answer-input:focus {
-            outline: none;
-            border-color: #0077b6;
-            box-shadow: 0 0 10px rgba(0,119,182,0.2);
-        }
-        .btn {
-            padding: 14px 35px;
-            font-size: 1.1em;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            margin: 5px;
-            transition: all 0.3s;
-            font-weight: bold;
-        }
-        .check-btn {
-            background: linear-gradient(135deg, #0077b6 0%, #023e8a 100%);
-            color: white;
-        }
-        .check-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0,119,182,0.3);
-        }
-        .next-btn {
-            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
-            color: white;
-        }
-        .next-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(72,187,120,0.3);
-        }
-        .back-btn {
-            background: #6c757d;
-            color: white;
-        }
-        .back-btn:hover {
-            background: #5a6268;
-        }
-        .hint-btn {
-            background: linear-gradient(135deg, #ffd700 0%, #ffa500 100%);
-            color: white;
-        }
-        .feedback {
-            padding: 20px;
-            border-radius: 12px;
-            margin: 20px 0;
-            text-align: center;
-            font-size: 1.2em;
-            font-weight: bold;
-            animation: slideIn 0.3s;
-        }
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .correct {
-            background: linear-gradient(135deg, #c6f6d5 0%, #9ae6b4 100%);
-            color: #22543d;
-            border-left: 5px solid #48bb78;
-        }
-        .incorrect {
-            background: linear-gradient(135deg, #fed7d7 0%, #fc8181 100%);
-            color: #742a2a;
-            border-left: 5px solid #f56565;
-        }
-        .hint {
-            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-            color: #78350f;
-            padding: 15px;
-            border-radius: 10px;
-            margin: 15px 0;
-            border-left: 4px solid #fbbf24;
-        }
-        .button-group {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin: 20px 0;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #00a8cc 0%, #0077b6 50%, #023e8a 100%); min-height: 100vh; padding: 20px; }
+        .container { max-width: 1200px; margin: 0 auto; background: white; border-radius: 20px; padding: 30px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
+        .header { text-align: center; margin-bottom: 30px; }
+        h1 { color: #0077b6; font-size: 2.2em; margin-bottom: 10px; }
+        .subtitle { color: #666; font-size: 1.1em; }
+        .name-input-section { background: linear-gradient(135deg, #e0f7fa 0%, #b2ebf2 100%); padding: 20px; border-radius: 12px; margin-bottom: 20px; text-align: center; }
+        .name-input { padding: 12px 20px; font-size: 1.1em; border: 2px solid #0077b6; border-radius: 8px; width: 300px; max-width: 100%; }
+        .tabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; justify-content: center; }
+        .tab { padding: 12px 24px; border: 2px solid #0077b6; background: white; color: #0077b6; border-radius: 8px; cursor: pointer; font-weight: bold; transition: all 0.3s; }
+        .tab.active { background: #0077b6; color: white; }
+        .tab:hover { transform: translateY(-2px); }
+        .stats-section { display: none; }
+        .stats-section.active { display: block; }
+        .leaderboard { background: #f8f9fa; border-radius: 12px; padding: 20px; margin-bottom: 20px; }
+        .leaderboard table { width: 100%; border-collapse: collapse; }
+        .leaderboard th { background: #0077b6; color: white; padding: 12px; text-align: left; }
+        .leaderboard td { padding: 10px; border-bottom: 1px solid #ddd; }
+        .leaderboard tr:hover { background: #f0f9ff; }
+        .medal { font-size: 1.5em; }
+        .grade-selection { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 15px; margin-bottom: 30px; }
+        .grade-btn { padding: 20px; border: 3px solid #0077b6; background: white; color: #0077b6; border-radius: 12px; cursor: pointer; font-size: 1.2em; font-weight: bold; transition: all 0.3s; }
+        .grade-btn:hover { background: #0077b6; color: white; transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,119,182,0.3); }
+        .topic-selection { display: none; }
+        .topic-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 15px; margin-bottom: 20px; }
+        .topic-btn { padding: 15px; border: 2px solid #023e8a; background: white; color: #023e8a; border-radius: 10px; cursor: pointer; font-size: 1em; transition: all 0.3s; text-align: left; }
+        .topic-btn:hover { background: #023e8a; color: white; transform: translateX(5px); }
+        .quiz-area { display: none; }
+        .questions-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-bottom: 25px; }
+        .question-card { background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); padding: 25px; border-radius: 15px; border-left: 5px solid #0077b6; }
+        .question-number { color: #0077b6; font-size: 0.9em; margin-bottom: 10px; font-weight: bold; }
+        .question-text { font-size: 1.2em; color: #333; margin-bottom: 15px; line-height: 1.6; }
+        .answer-input { width: 100%; padding: 12px; font-size: 1.1em; border: 3px solid #ddd; border-radius: 8px; margin-bottom: 10px; text-align: center; transition: all 0.3s; }
+        .answer-input:focus { outline: none; border-color: #0077b6; box-shadow: 0 0 10px rgba(0,119,182,0.2); }
+        .answer-input.correct { border-color: #48bb78; background: #c6f6d5; }
+        .answer-input.incorrect { border-color: #f56565; background: #fed7d7; }
+        .btn { padding: 14px 35px; font-size: 1.1em; border: none; border-radius: 10px; cursor: pointer; margin: 5px; transition: all 0.3s; font-weight: bold; }
+        .check-btn { background: linear-gradient(135deg, #0077b6 0%, #023e8a 100%); color: white; }
+        .check-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,119,182,0.3); }
+        .next-btn { background: linear-gradient(135deg, #48bb78 0%, #38a169 100%); color: white; }
+        .back-btn { background: #6c757d; color: white; }
+        .result-summary { background: linear-gradient(135deg, #e0f7fa 0%, #b2ebf2 100%); padding: 25px; border-radius: 12px; text-align: center; font-size: 1.3em; margin-bottom: 20px; }
+        .button-group { display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; margin: 20px 0; }
+        .hidden { display: none; }
     </style>
 </head>
 <body>
     <div class="container">
-        <div id="installPrompt" class="install-prompt">
-            <div>📱 Установите приложение на главный экран!</div>
-            <button class="install-btn" onclick="installApp()">Установить</button>
-        </div>
-        
         <div class="header">
             <h1>🎓 Математика</h1>
             <p class="subtitle">Программа Министерства образования РК</p>
         </div>
-        <div class="stats-bar">
-            <div class="stat-item">
-                <div class="stat-value" id="totalScore">0</div>
-                <div class="stat-label">Всего баллов</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-value" id="sessionScore">0/0</div>
-                <div class="stat-label">В этой сессии</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-value" id="streakDisplay">0🔥</div>
-                <div class="stat-label">Серия</div>
+
+        <div class="name-input-section">
+            <label for="studentName" style="font-size: 1.1em; font-weight: bold; color: #0077b6; display: block; margin-bottom: 10px;">👤 Введите имя ученика:</label>
+            <input type="text" id="studentName" class="name-input" placeholder="Например: Айгуль">
+        </div>
+
+        <div class="tabs">
+            <button class="tab active" onclick="showTab('practice')">📝 Практика</button>
+            <button class="tab" onclick="showTab('stats')">📊 Статистика</button>
+        </div>
+
+        <div id="statsSection" class="stats-section">
+            <div class="leaderboard">
+                <h2 style="color: #0077b6; margin-bottom: 20px;">🏆 Таблица лидеров</h2>
+                <table id="leaderboardTable">
+                    <thead>
+                        <tr>
+                            <th>Место</th>
+                            <th>Имя</th>
+                            <th>Баллы</th>
+                            <th>Правильных</th>
+                            <th>Всего задач</th>
+                            <th>Точность</th>
+                        </tr>
+                    </thead>
+                    <tbody id="leaderboardBody"></tbody>
+                </table>
             </div>
         </div>
-        <div class="achievements" id="achievements">
-            <div class="achievement" id="ach1" title="Первая задача">🌟</div>
-            <div class="achievement" id="ach2" title="10 правильных">⭐</div>
-            <div class="achievement" id="ach3" title="Серия 5">🔥</div>
-            <div class="achievement" id="ach4" title="50 задач">🏆</div>
-            <div class="achievement" id="ach5" title="Мастер">👑</div>
-        </div>
-        <div id="gradeSelection">
-            <h2 style="text-align: center; color: #0077b6; margin-bottom: 20px;">Выберите класс:</h2>
-            <div class="grade-selection">
-                <button class="grade-btn" onclick="selectGrade(1)">1<br>класс</button>
-                <button class="grade-btn" onclick="selectGrade(2)">2<br>класс</button>
-                <button class="grade-btn" onclick="selectGrade(3)">3<br>класс</button>
-                <button class="grade-btn" onclick="selectGrade(4)">4<br>класс</button>
-                <button class="grade-btn" onclick="selectGrade(5)">5<br>класс</button>
-                <button class="grade-btn" onclick="selectGrade(6)">6<br>класс</button>
-                <button class="grade-btn" onclick="selectGrade(7)">7<br>класс</button>
+
+        <div id="practiceSection" class="stats-section active">
+            <div id="gradeSelection">
+                <h2 style="text-align: center; color: #0077b6; margin-bottom: 20px;">Выберите класс:</h2>
+                <div class="grade-selection">
+                    <button class="grade-btn" onclick="selectGrade(1)">1<br>класс</button>
+                    <button class="grade-btn" onclick="selectGrade(2)">2<br>класс</button>
+                    <button class="grade-btn" onclick="selectGrade(3)">3<br>класс</button>
+                    <button class="grade-btn" onclick="selectGrade(4)">4<br>класс</button>
+                    <button class="grade-btn" onclick="selectGrade(5)">5<br>класс</button>
+                    <button class="grade-btn" onclick="selectGrade(6)">6<br>класс</button>
+                    <button class="grade-btn" onclick="selectGrade(7)">7<br>класс</button>
+                </div>
             </div>
-        </div>
-        <div id="topicSelection" class="topic-selection">
-            <h2 style="text-align: center; color: #0077b6; margin-bottom: 20px;">Выберите тему:</h2>
-            <div class="topic-grid" id="topicButtons"></div>
-            <div style="text-align: center;">
-                <button class="btn back-btn" onclick="backToGrades()">← Назад к классам</button>
+
+            <div id="topicSelection" class="topic-selection">
+                <h2 style="text-align: center; color: #0077b6; margin-bottom: 20px;">Выберите тему:</h2>
+                <div class="topic-grid" id="topicButtons"></div>
+                <div style="text-align: center;">
+                    <button class="btn back-btn" onclick="backToGrades()">← Назад к классам</button>
+                </div>
             </div>
-        </div>
-        <div id="quizArea" class="quiz-area">
-            <div class="progress-bar">
-                <div class="progress-fill" id="progressFill">0%</div>
-            </div>
-            <div class="question-card">
-                <div class="question-type" id="questionType"></div>
-                <div class="question-text" id="question"></div>
-            </div>
-            <input type="text" class="answer-input" id="answerInput" placeholder="Введите ваш ответ">
-            <div class="button-group">
-                <button class="btn check-btn" onclick="checkAnswer()">✓ Проверить</button>
-                <button class="btn hint-btn" onclick="showHint()">💡 Подсказка</button>
-                <button class="btn next-btn" onclick="nextQuestion()">Следующая →</button>
-            </div>
-            <div id="hintArea"></div>
-            <div id="feedback"></div>
-            <div style="text-align: center; margin-top: 20px;">
-                <button class="btn back-btn" onclick="backToTopics()">← Назад к темам</button>
+
+            <div id="quizArea" class="quiz-area">
+                <div class="result-summary" id="resultSummary"></div>
+                <div class="questions-grid" id="questionsGrid"></div>
+                <div class="button-group">
+                    <button class="btn check-btn" onclick="checkAllAnswers()">✓ Проверить все</button>
+                    <button class="btn next-btn" onclick="generateNewSet()">Новый набор →</button>
+                    <button class="btn back-btn" onclick="backToTopics()">← Назад к темам</button>
+                </div>
             </div>
         </div>
     </div>
+
     <script>
-        let currentGrade=0,currentTopic='',currentQuestion=null,correctAnswers=0,totalQuestions=0,streak=0,totalScore=0,questionsInSession=0,hintsUsed=0;
-        const topics={1:['Числа от 1 до 10','Сложение в пределах 10','Вычитание в пределах 10','Числа от 11 до 20','Сравнение чисел','Решение простых задач'],2:['Числа от 1 до 100','Сложение и вычитание в пределах 20','Сложение и вычитание в пределах 100','Умножение (таблица на 2, 3, 4)','Деление','Текстовые задачи'],3:['Числа от 1 до 1000','Сложение и вычитание трёхзначных чисел','Умножение и деление (вся таблица)','Внетабличное умножение и деление','Доли и дроби','Задачи на движение'],4:['Многозначные числа','Арифметические действия','Письменное умножение и деление','Скорость, время, расстояние','Площадь и периметр','Дроби и смешанные числа'],5:['Натуральные числа и действия с ними','Обыкновенные дроби','Десятичные дроби','Проценты','Площадь и объём','Уравнения'],6:['Делимость чисел','Положительные и отрицательные числа','Модуль числа','Рациональные числа','Пропорции и отношения','Координатная плоскость'],7:['Алгебраические выражения','Линейные уравнения','Степени и их свойства','Одночлены и многочлены','Формулы сокращённого умножения','Системы линейных уравнений']};
-        
-        // PWA Installation
-        let deferredPrompt;
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredPrompt = e;
-            document.getElementById('installPrompt').style.display = 'block';
-        });
-        
-        function installApp() {
-            if (deferredPrompt) {
-                deferredPrompt.prompt();
-                deferredPrompt.userChoice.then((choiceResult) => {
-                    if (choiceResult.outcome === 'accepted') {
-                        console.log('Приложение установлено');
-                    }
-                    deferredPrompt = null;
-                    document.getElementById('installPrompt').style.display = 'none';
-                });
+        let currentGrade = 0;
+        let currentTopic = '';
+        let currentQuestions = [];
+        let studentResults = {};
+
+        const topics = {
+            1: ['Числа от 1 до 10', 'Сложение в пределах 10', 'Вычитание в пределах 10', 'Числа от 11 до 20', 'Сравнение чисел', 'Состав чисел', 'Задачи на логику'],
+            2: ['Числа от 1 до 100', 'Сложение и вычитание в пределах 20', 'Сложение и вычитание в пределах 100', 'Таблица умножения на 2, 3', 'Деление на 2, 3', 'Текстовые задачи', 'Логические задачи'],
+            3: ['Числа до 1000', 'Сложение и вычитание трёхзначных', 'Таблица умножения (вся)', 'Внетабличное умножение', 'Деление с остатком', 'Доли и дроби', 'Задачи на движение', 'Логика и ребусы'],
+            4: ['Многозначные числа', 'Четыре арифметических действия', 'Письменное умножение', 'Письменное деление', 'Скорость, время, расстояние', 'Площадь и периметр', 'Дроби', 'Логические задачи'],
+            5: ['Натуральные числа', 'Обыкновенные дроби', 'Сложение и вычитание дробей', 'Умножение и деление дробей', 'Десятичные дроби', 'Проценты', 'Уравнения', 'Площадь и объём', 'Логика'],
+            6: ['Делимость чисел', 'Рациональные числа', 'Модуль числа', 'Сравнение рациональных чисел', 'Действия с рациональными числами', 'Пропорции', 'Координатная плоскость', 'Логические задачи'],
+            7: ['Алгебраические выражения', 'Линейные уравнения', 'Степени', 'Одночлены', 'Многочлены', 'Формулы сокращённого умножения', 'Системы уравнений', 'Задачи на логику']
+        };
+
+        function showTab(tab) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.stats-section').forEach(s => s.classList.remove('active'));
+            
+            if (tab === 'stats') {
+                event.target.classList.add('active');
+                document.getElementById('statsSection').classList.add('active');
+                updateLeaderboard();
+            } else {
+                document.querySelector('.tab').classList.add('active');
+                document.getElementById('practiceSection').classList.add('active');
             }
         }
-        
-        // Service Worker Registration
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('sw.js').then(function(registration) {
-                console.log('Service Worker зарегистрирован');
-            }).catch(function(err) {
-                console.log('Ошибка регистрации Service Worker:', err);
+
+        function loadResults() {
+            const saved = localStorage.getItem('studentResults');
+            if (saved) {
+                studentResults = JSON.parse(saved);
+            }
+        }
+
+        function saveResults() {
+            localStorage.setItem('studentResults', JSON.stringify(studentResults));
+        }
+
+        function updateLeaderboard() {
+            const tbody = document.getElementById('leaderboardBody');
+            tbody.innerHTML = '';
+            
+            const students = Object.entries(studentResults).map(([name, data]) => ({
+                name,
+                score: data.totalScore || 0,
+                correct: data.totalCorrect || 0,
+                total: data.totalQuestions || 0,
+                accuracy: data.totalQuestions > 0 ? Math.round((data.totalCorrect / data.totalQuestions) * 100) : 0
+            })).sort((a, b) => b.score - a.score);
+            
+            students.forEach((student, index) => {
+                const row = tbody.insertRow();
+                const medals = ['🥇', '🥈', '🥉'];
+                const medal = index < 3 ? medals[index] : (index + 1) + '.';
+                
+                row.innerHTML = `
+                    <td><span class="medal">${medal}</span></td>
+                    <td>${student.name}</td>
+                    <td><strong>${student.score}</strong></td>
+                    <td>${student.correct}</td>
+                    <td>${student.total}</td>
+                    <td>${student.accuracy}%</td>
+                `;
+            });
+            
+            if (students.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 20px;">Пока нет данных. Начните решать задачи!</td></tr>';
+            }
+        }
+
+        function selectGrade(grade) {
+            currentGrade = grade;
+            document.getElementById('gradeSelection').style.display = 'none';
+            document.getElementById('topicSelection').style.display = 'block';
+            
+            const topicButtons = document.getElementById('topicButtons');
+            topicButtons.innerHTML = '';
+            
+            topics[grade].forEach(topic => {
+                const btn = document.createElement('button');
+                btn.className = 'topic-btn';
+                btn.textContent = topic;
+                btn.onclick = () => selectTopic(topic);
+                topicButtons.appendChild(btn);
             });
         }
-        
-        function loadProgress(){const saved=localStorage.getItem('mathProgress');if(saved){const data=JSON.parse(saved);totalScore=data.totalScore||0;updateDisplay();checkAchievements();}}
-        function saveProgress(){localStorage.setItem('mathProgress',JSON.stringify({totalScore,correctAnswers,totalQuestions:questionsInSession}));}
-        function selectGrade(grade){currentGrade=grade;document.getElementById('gradeSelection').style.display='none';document.getElementById('topicSelection').style.display='block';const topicButtons=document.getElementById('topicButtons');topicButtons.innerHTML='';topics[grade].forEach(topic=>{const btn=document.createElement('button');btn.className='topic-btn';btn.textContent=topic;btn.onclick=()=>selectTopic(topic);topicButtons.appendChild(btn);});}
-        function selectTopic(topic){currentTopic=topic;correctAnswers=0;questionsInSession=0;document.getElementById('topicSelection').style.display='none';document.getElementById('quizArea').style.display='block';generateQuestion();}
-        function generateQuestion(){document.getElementById('feedback').innerHTML='';document.getElementById('hintArea').innerHTML='';document.getElementById('answerInput').value='';hintsUsed=0;let question,answer,hint,type='Арифметика';switch(currentTopic){case'Числа от 1 до 10':case'Сложение в пределах 10':const a1=Math.floor(Math.random()*9)+1;const b1=Math.floor(Math.random()*(10-a1))+1;question=`${a1} + ${b1} = ?`;answer=a1+b1;hint=`Попробуй посчитать на пальцах: ${a1} пальцев и ещё ${b1}`;break;case'Вычитание в пределах 10':const a2=Math.floor(Math.random()*9)+2;const b2=Math.floor(Math.random()*a2)+1;question=`${a2} - ${b2} = ?`;answer=a2-b2;hint=`У тебя было ${a2}, отняли ${b2}. Сколько осталось?`;break;case'Числа от 11 до 20':case'Сложение и вычитание в пределах 20':const a3=Math.floor(Math.random()*15)+5;const b3=Math.floor(Math.random()*(20-a3))+1;question=`${a3} + ${b3} = ?`;answer=a3+b3;hint='Разложи на десятки и единицы';break;case'Сравнение чисел':type='Сравнение';const n1=Math.floor(Math.random()*20)+1;const n2=Math.floor(Math.random()*20)+1;question=`Какое число больше: ${n1} или ${n2}? (Введи большее число)`;answer=Math.max(n1,n2);hint='Посмотри внимательно на числа';break;case'Умножение (таблица на 2, 3, 4)':case'Умножение и деление (вся таблица)':const mult=[2,3,4,5,6,7,8,9][Math.floor(Math.random()*8)];const num=Math.floor(Math.random()*9)+2;question=`${mult} × ${num} = ?`;answer=mult*num;hint=`${mult} повторить ${num} раз`;break;case'Деление':case'Внетабличное умножение и деление':const div=Math.floor(Math.random()*9)+2;const res=Math.floor(Math.random()*9)+2;const total=div*res;question=`${total} ÷ ${div} = ?`;answer=res;hint=`Какое число умножить на ${div}, чтобы получить ${total}?`;break;case'Сложение и вычитание в пределах 100':case'Числа от 1 до 100':const a4=Math.floor(Math.random()*80)+10;const b4=Math.floor(Math.random()*30)+5;const op=Math.random()>0.5?'+':'-';if(op==='+'){question=`${a4} + ${b4} = ?`;answer=a4+b4;}else{question=`${a4} - ${b4} = ?`;answer=a4-b4;}hint='Считай десятками, потом единицами';break;case'Решение простых задач':case'Текстовые задачи':type='Задача';const stories=[{text:'У Айгуль было {0} яблок. Она отдала {1} яблок подруге. Сколько яблок осталось?',gen:()=>{const x=Math.floor(Math.random()*15)+5;const y=Math.floor(Math.random()*x/2)+1;return[x,y,x-y];}},{text:'В классе {0} мальчиков и {1} девочек. Сколько всего детей?',gen:()=>{const x=Math.floor(Math.random()*15)+10;const y=Math.floor(Math.random()*15)+10;return[x,y,x+y];}},{text:'Асель купила {0} тетрадей по {1} тенге. Сколько она заплатила?',gen:()=>{const x=Math.floor(Math.random()*5)+2;const y=[10,20,30,50][Math.floor(Math.random()*4)];return[x,y,x*y];}}];const story=stories[Math.floor(Math.random()*stories.length)];const vals=story.gen();question=story.text.replace('{0}',vals[0]).replace('{1}',vals[1]);answer=vals[2];hint='Внимательно прочитай задачу. Что нужно найти?';break;case'Десятичные дроби':const d1=(Math.floor(Math.random()*50)+10)/10;const d2=(Math.floor(Math.random()*30)+5)/10;question=`${d1} + ${d2} = ?`;answer=Math.round((d1+d2)*10)/10;hint='Складывай как обычные числа, не забудь про запятую';break;case'Проценты':type='Проценты';const base=[100,200,500][Math.floor(Math.random()*3)];const perc=[10,20,50][Math.floor(Math.random()*3)];question=`Найди ${perc}% от ${base}`;answer=base*perc/100;hint=`${perc}% = ${perc}/100. Умножь ${base} на ${perc} и раздели на 100`;break;case'Уравнения':case'Линейные уравнения':type='Уравнение';const x=Math.floor(Math.random()*20)+1;const c=Math.floor(Math.random()*30)+10;question=`x + ${c} = ${x+c}. Найди x`;answer=x;hint=`Что нужно прибавить к ${c}, чтобы получить ${x+c}?`;break;default:const ra=Math.floor(Math.random()*50)+10;const rb=Math.floor(Math.random()*30)+5;question=`${ra} + ${rb} = ?`;answer=ra+rb;hint='Посчитай внимательно';}currentQuestion={question,answer,hint,type};document.getElementById('question').textContent=question;document.getElementById('questionType').textContent=type;updateProgress();}
-        function checkAnswer(){const userAnswer=parseFloat(document.getElementById('answerInput').value);const feedback=document.getElementById('feedback');if(isNaN(userAnswer)){feedback.className='feedback incorrect';feedback.innerHTML='⚠️ Пожалуйста, введите число!';return;}questionsInSession++;totalQuestions++;const isCorrect=Math.abs(userAnswer-currentQuestion.answer)<0.01;if(isCorrect){correctAnswers++;streak++;const points=hintsUsed===0?10:5;totalScore+=points;feedback.className='feedback correct';feedback.innerHTML=`✓ Правильно! Отлично!<br>+${points} баллов${streak>=3?'<br>🔥 Серия: '+streak:''}`;checkAchievements();}else{streak=0;feedback.className='feedback incorrect';feedback.innerHTML=`✗ Неправильно. Правильный ответ: ${currentQuestion.answer}<br>Попробуй ещё раз!`;}updateDisplay();saveProgress();}
-        function showHint(){if(hintsUsed>=1){document.getElementById('hintArea').innerHTML='<div class="hint">💡 Ты уже использовал подсказку!</div>';return;}hintsUsed++;document.getElementById('hintArea').innerHTML=`<div class="hint">💡 Подсказка: ${currentQuestion.hint}</div>`;}
-        function nextQuestion(){generateQuestion();}
-        function updateProgress(){const progress=questionsInSession>0?(correctAnswers/questionsInSession*100):0;document.getElementById('progressFill').style.width=progress+'%';document.getElementById('progressFill').textContent=Math.round(progress)+'%';}
-        function updateDisplay(){document.getElementById('totalScore').textContent=totalScore;document.getElementById('sessionScore').textContent=`${correctAnswers}/${questionsInSession}`;document.getElementById('streakDisplay').textContent=streak+'🔥';}
-        function checkAchievements(){if(totalQuestions>=1)unlockAchievement('ach1');if(correctAnswers>=10)unlockAchievement('ach2');if(streak>=5)unlockAchievement('ach3');if(totalQuestions>=50)unlockAchievement('ach4');if(totalScore>=500)unlockAchievement('ach5');}
-        function unlockAchievement(id){const ach=document.getElementById(id);if(!ach.classList.contains('unlocked')){ach.classList.add('unlocked');}}
-        function backToTopics(){document.getElementById('quizArea').style.display='none';document.getElementById('topicSelection').style.display='block';}
-        function backToGrades(){document.getElementById('topicSelection').style.display='none';document.getElementById('gradeSelection').style.display='block';}
-        document.getElementById('answerInput').addEventListener('keypress',function(e){if(e.key==='Enter'){checkAnswer();}});
-        loadProgress();
+
+        function selectTopic(topic) {
+            currentTopic = topic;
+            document.getElementById('topicSelection').style.display = 'none';
+            document.getElementById('quizArea').style.display = 'block';
+            generateNewSet();
+        }
+
+        function generateNewSet() {
+            currentQuestions = [];
+            for (let i = 0; i < 4; i++) {
+                currentQuestions.push(generateQuestion());
+            }
+            renderQuestions();
+            document.getElementById('resultSummary').innerHTML = '';
+        }
+
+        function generateQuestion() {
+            let question, answer, type = 'Арифметика';
+            
+            if (currentTopic.includes('логик') || currentTopic.includes('ребус')) {
+                return generateLogicQuestion();
+            }
+            
+            switch(currentTopic) {
+                case 'Числа от 1 до 10':
+                case 'Сложение в пределах 10':
+                    const a1 = Math.floor(Math.random() * 9) + 1;
+                    const b1 = Math.floor(Math.random() * (10 - a1)) + 1;
+                    question = `${a1} + ${b1}`;
+                    answer = a1 + b1;
+                    break;
+                    
+                case 'Вычитание в пределах 10':
+                    const a2 = Math.floor(Math.random() * 9) + 2;
+                    const b2 = Math.floor(Math.random() * a2) + 1;
+                    question = `${a2} - ${b2}`;
+                    answer = a2 - b2;
+                    break;
+                    
+                case 'Сравнение чисел':
+                    const n1 = Math.floor(Math.random() * 20) + 1;
+                    const n2 = Math.floor(Math.random() * 20) + 1;
+                    question = `Большее из ${n1} и ${n2}`;
+                    answer = Math.max(n1, n2);
+                    type = 'Сравнение';
+                    break;
+                    
+                case 'Таблица умножения на 2, 3':
+                case 'Таблица умножения (вся)':
+                    const mult = currentGrade <= 2 ? [2, 3][Math.floor(Math.random() * 2)] : Math.floor(Math.random() * 8) + 2;
+                    const num = Math.floor(Math.random() * 9) + 2;
+                    question = `${mult} × ${num}`;
+                    answer = mult * num;
+                    break;
+                    
+                case 'Деление на 2, 3':
+                case 'Деление с остатком':
+                    const div = currentGrade <= 2 ? [2, 3][Math.floor(Math.random() * 2)] : Math.floor(Math.random() * 7) + 2;
+                    const res = Math.floor(Math.random() * 9) + 2;
+                    question = `${div * res} ÷ ${div}`;
+                    answer = res;
+                    break;
+                    
+                case 'Текстовые задачи':
+                    const stories = [
+                        {q: `У Асель ${Math.floor(Math.random() * 10) + 5} яблок. Она дала ${Math.floor(Math.random() * 3) + 1}. Сколько осталось?`},
+                        {q: `В классе ${Math.floor(Math.random() * 10) + 15} мальчиков и ${Math.floor(Math.random() * 10) + 15} девочек. Всего детей?`}
+                    ];
+                    const nums = question.match(/\d+/g).map(Number);
+                    answer = nums.reduce((a, b) => a + b, 0);
+                    question = stories[Math.floor(Math.random() * stories.length)].q;
+                    break;
+                    
+                case 'Десятичные дроби':
+                    const d1 = (Math.floor(Math.random() * 50) + 10) / 10;
+                    const d2 = (Math.floor(Math.random() * 30) + 5) / 10;
+                    question = `${d1} + ${d2}`;
+                    answer = Math.round((d1 + d2) * 10) / 10;
+                    break;
+                    
+                case 'Проценты':
+                    const base = [100, 200, 500][Math.floor(Math.random() * 3)];
+                    const perc = [10, 20, 50][Math.floor(Math.random() * 3)];
+                    question = `${perc}% от ${base}`;
+                    answer = base * perc / 100;
+                    break;
+                    
+                case 'Линейные уравнения':
+                case 'Уравнения':
+                    const x = Math.floor(Math.random() * 20) + 1;
+                    const c = Math.floor(Math.random() * 30) + 10;
+                    question = `x + ${c} = ${x + c}, x = ?`;
+                    answer = x;
+                    type = 'Уравнение';
+                    break;
+                    
+                default:
+                    const ra = Math.floor(Math.random() * 50) + 10;
+                    const rb = Math.floor(Math.random() * 30) + 5;
+                    question = `${ra} + ${rb}`;
+                    answer = ra + rb;
+            }
+            
+            return { question, answer, type };
+        }
+
+        function generateLogicQuestion() {
+            const logicQuestions = [
+                { question: 'У Айгуль 2 яблока. У Асель на 3 больше. Сколько у Асель?', answer: 5 },
+                { question: 'Продолжи: 2, 4, 6, 8, ?', answer: 10 },
+                { question: 'Если 5 + 3 = 8, то 8 - 3 = ?', answer: 5 },
+                { question: 'У кошки 4 лапы. У двух кошек сколько лап?', answer: 8 },
+                { question: '10 - 2 - 2 - 2 = ?', answer: 4 },
+                { question: 'Продолжи: 1, 3, 5, 7, ?', answer: 9 },
+                { question: 'В корзине 10 яблок. Съели 3. Сколько осталось?', answer: 7 },
+                { question: '3 + 3 + 3 = ? (запиши ответ)', answer: 9 }
+            ];
+            
+            const q = logicQuestions[Math.floor(Math.random() * logicQuestions.length)];
+            return { question: q.question, answer: q.answer, type: 'Логика' };
+        }
+
+        function renderQuestions() {
+            const grid = document.getElementById('questionsGrid');
+            grid.innerHTML = '';
+            
+            currentQuestions.forEach((q, index) => {
+                const card = document.createElement('div');
+                card.className = 'question-card';
+                card.innerHTML = `
+                    <div class="question-number">${q.type} • Задача ${index + 1}</div>
+                    <div class="question-text">${q.question} = ?</div>
+                    <input type="number" step="0.1" class="answer-input" id="answer${index}" placeholder="Ваш ответ">
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function checkAllAnswers() {
+            const name = document.getElementById('studentName').value.trim();
+            if (!name) {
+                alert('Пожалуйста, введите имя ученика!');
+                return;
+            }
+            
+            let correct = 0;
+            let total = currentQuestions.length;
+            
+            currentQuestions.forEach((q, index) => {
+                const input = document.getElementById(`answer${index}`);
+                const userAnswer = parseFloat(input.value);
+                
+                if (Math.abs(userAnswer - q.answer) < 0.01) {
+                    correct++;
+                    input.classList.add('correct');
+                    input.classList.remove('incorrect');
+                } else {
+                    input.classList.add('incorrect');
+                    input.classList.remove('correct');
+                }
+            });
+            
+            const score = correct * 10;
+            
+            if (!studentResults[name]) {
+                studentResults[name] = { totalScore: 0, totalCorrect: 0, totalQuestions: 0 };
+            }
+            
+            studentResults[name].totalScore += score;
+            studentResults[name].totalCorrect += correct;
+            studentResults[name].totalQuestions += total;
+            
+            saveResults();
+            
+            const accuracy = Math.round((correct / total) * 100);
+            document.getElementById('resultSummary').innerHTML = `
+                <strong>${name}</strong>: ${correct} из ${total} (${accuracy}%) • +${score} баллов 🎉
+            `;
+        }
+
+        function backToTopics() {
+            document.getElementById('quizArea').style.display = 'none';
+            document.getElementById('topicSelection').style.display = 'block';
+        }
+
+        function backToGrades() {
+            document.getElementById('topicSelection').style.display = 'none';
+            document.getElementById('gradeSelection').style.display = 'block';
+        }
+
+        loadResults();
     </script>
 </body>
 </html>
