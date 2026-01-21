@@ -1,299 +1,174 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <title>Математика 1–7 классы</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<title>Математика 1–7 классы</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f4f6f8;
-            margin: 0;
-            padding: 0;
-        }
-
-        header {
-            background: #2c3e50;
-            color: white;
-            padding: 15px;
-            text-align: center;
-        }
-
-        main {
-            max-width: 700px;
-            margin: 20px auto;
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-        }
-
-        select, button, input {
-            width: 100%;
-            padding: 10px;
-            margin: 8px 0;
-            font-size: 16px;
-        }
-
-        button {
-            background: #3498db;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background: #2980b9;
-        }
-
-        .task {
-            font-size: 22px;
-            margin: 20px 0;
-            text-align: center;
-        }
-
-        .result {
-            margin-top: 15px;
-            font-weight: bold;
-        }
-
-        .ok { color: green; }
-        .bad { color: red; }
-
-        footer {
-            text-align: center;
-            font-size: 14px;
-            color: #888;
-            margin-top: 30px;
-        }
-    </style>
+<style>
+body{font-family:Arial;background:#f4f6f8;margin:0}
+main{max-width:700px;margin:20px auto;background:#fff;padding:20px;border-radius:10px}
+select,button,input{width:100%;padding:10px;margin:8px 0;font-size:16px}
+button{background:#3498db;color:#fff;border:0;border-radius:6px}
+.task{font-size:22px;text-align:center;margin:20px 0}
+.ok{color:green}.bad{color:red}
+</style>
 </head>
+
 <body>
-
-<header>
-    <h1>📘 Математика (1–7 классы)</h1>
-</header>
-
 <main>
-    <label>Язык:</label>
-    <select id="lang">
-        <option value="ru">Русский</option>
-        <option value="kk">Қазақша</option>
-    </select>
 
-    <label>Класс:</label>
-    <select id="grade"></select>
+<h2>📘 Математика 1–7 классы</h2>
 
-    <label>Тема:</label>
-    <select id="topic"></select>
+<label>Язык</label>
+<select id="lang">
+<option value="ru">Русский</option>
+<option value="kk">Қазақша</option>
+</select>
 
-    <button onclick="startLesson()">Начать</button>
+<label>Класс</label>
+<select id="grade"></select>
 
-    <div id="lesson" style="display:none;">
-        <div class="task" id="taskText"></div>
-        <input type="number" id="answer" placeholder="Ваш ответ">
-        <button onclick="check()">Проверить</button>
-        <div class="result" id="result"></div>
-    </div>
+<label>Тема</label>
+<select id="topic"></select>
+
+<button onclick="startLesson()">Начать</button>
+
+<div id="lesson" style="display:none">
+<div class="task" id="task"></div>
+<input id="answer" type="number" placeholder="Ответ">
+<button onclick="check()">Проверить</button>
+<div id="result"></div>
+</div>
+
 </main>
 
-<footer>
-    Учебный тренажёр • 1–7 классы
-</footer>
-
 <script>
-/* =========================================================
-   ДАННЫЕ (ru + kk)
-   ========================================================= */
-
-let currentLanguage = 'ru';
-let currentGrade = null;
-let currentTopic = null;
-let currentTask = null;
+/* ================== ДАННЫЕ ================== */
+let currentLanguage = 'ru'
+let currentGrade = 1
+let currentTopicIndex = 0
+let currentTask = null
 
 const topicsRu = {
-    1: ['Сложение до 10', 'Вычитание до 10'],
-    2: ['Таблица умножения', 'Деление'],
-    3: ['Сложение и вычитание', 'Текстовые задачи'],
-    4: ['Дроби', 'Периметр и площадь'],
-    5: ['Проценты', 'Уравнения'],
-    6: ['Десятичные дроби', 'Пропорции'],
-    7: ['Линейные уравнения', 'Проценты']
-};
-
-const topics = {
-    1: ['10-ға дейін қосу', '10-ға дейін азайту'],
-    2: ['Көбейту кестесі', 'Бөлу'],
-    3: ['Қосу және азайту', 'Мәтінді есептер'],
-    4: ['Бөлшектер', 'Периметр және аудан'],
-    5: ['Пайыздар', 'Теңдеулер'],
-    6: ['Ондық бөлшектер', 'Пропорциялар'],
-    7: ['Сызықтық теңдеулер', 'Пайыздар']
-};
-
-function getTopicId(name) {
-    if (name.includes('Слож') || name.includes('Қосу')) return 'addition_10';
-    if (name.includes('Выч') || name.includes('Азайту')) return 'subtraction_10';
-    if (name.includes('умнож') || name.includes('Көбей')) return 'multiplication_table';
-    if (name.includes('Дел') || name.includes('Бөлу')) return 'division';
-    if (name.includes('Проц') || name.includes('Пайыз')) return 'percentages';
-    if (name.includes('Урав') || name.includes('Теңдеу')) return 'equations';
-    if (name.includes('Дроб') || name.includes('Бөлш')) return 'fractions';
-    if (name.includes('Перим') || name.includes('аудан')) return 'area';
-    return 'default';
+1:['Сложение до 10','Вычитание до 10'],
+2:['Таблица умножения','Деление'],
+3:['Сложение и вычитание','Текстовые задачи'],
+4:['Дроби','Периметр и площадь'],
+5:['Проценты','Уравнения'],
+6:['Десятичные дроби','Пропорции'],
+7:['Линейные уравнения','Проценты']
 }
 
-/* =========================================================
-   TASK ENGINE (ФИНАЛ)
-   ========================================================= */
-
-const TASK_MODE = 'stable';
-const TASKS_PER_TOPIC = 10;
-const taskBank = {};
-
-function mulberry32(seed) {
-    return function () {
-        let t = seed += 0x6D2B79F5;
-        t = Math.imul(t ^ t >>> 15, t | 1);
-        t ^= t + Math.imul(t ^ t >>> 7, t | 61);
-        return ((t ^ t >>> 14) >>> 0) / 4294967296;
-    }
+const topicsKk = {
+1:['10-ға дейін қосу','10-ға дейін азайту'],
+2:['Көбейту кестесі','Бөлу'],
+3:['Қосу және азайту','Мәтінді есептер'],
+4:['Бөлшектер','Периметр және аудан'],
+5:['Пайыздар','Теңдеулер'],
+6:['Ондық бөлшектер','Пропорциялар'],
+7:['Сызықтық теңдеулер','Пайыздар']
 }
 
-function seedKey(g, t) {
-    return g * 10007 ^ t * 7919;
+function getTopics() {
+return currentLanguage === 'ru' ? topicsRu : topicsKk
 }
 
-const Progress = {
-    load() {
-        return JSON.parse(localStorage.getItem('math_progress') || '{}');
-    },
-    save(d) {
-        localStorage.setItem('math_progress', JSON.stringify(d));
-    },
-    get(g, t) {
-        const d = this.load();
-        return d[`${g}_${t}`] || { i: 0, ok: 0, bad: 0 };
-    },
-    set(g, t, v) {
-        const d = this.load();
-        d[`${g}_${t}`] = v;
-        this.save(d);
-    }
-};
+/* ================== TASK ENGINE ================== */
+const TASKS_PER_TOPIC = 10
+const taskBank = {}
 
-function generateTask(id, rng) {
-    if (id === 'addition_10') {
-        let a = Math.floor(rng()*9)+1, b = Math.floor(rng()*9)+1;
-        return { q:`${a} + ${b}`, a:a+b };
-    }
-    if (id === 'subtraction_10') {
-        let a = Math.floor(rng()*9)+2, b = Math.floor(rng()*a);
-        return { q:`${a} − ${b}`, a:a-b };
-    }
-    if (id === 'multiplication_table') {
-        let a = Math.floor(rng()*8)+2, b = Math.floor(rng()*8)+2;
-        return { q:`${a} × ${b}`, a:a*b };
-    }
-    if (id === 'division') {
-        let b = Math.floor(rng()*8)+2, r = Math.floor(rng()*8)+2;
-        return { q:`${b*r} ÷ ${b}`, a:r };
-    }
-    if (id === 'percentages') {
-        let base=[100,200,500][Math.floor(rng()*3)];
-        let p=[10,20,50][Math.floor(rng()*3)];
-        return { q:`${p}% от ${base}`, a:base*p/100 };
-    }
-    if (id === 'equations') {
-        let x=Math.floor(rng()*20)+1, c=Math.floor(rng()*20)+5;
-        return { q:`x + ${c} = ${x+c}`, a:x };
-    }
-    return { q:'1 + 1', a:2 };
+function rng(seed){return()=>{seed|=0;seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+
+function topicId(name){
+if(/Слож|Қосу/.test(name))return'add'
+if(/Выч|Азай/.test(name))return'sub'
+if(/Көбей|умнож/.test(name))return'mul'
+if(/Бөл|Дел/.test(name))return'div'
+if(/Пайыз|Проц/.test(name))return'perc'
+if(/Тең|Урав/.test(name))return'eq'
+return'def'
 }
 
-function buildTaskBank() {
-    for (let g=1; g<=7; g++) {
-        taskBank[g]={};
-        const list = currentLanguage==='ru'?topicsRu[g]:topics[g];
-        list.forEach((n,i)=>{
-            const rng = mulberry32(seedKey(g,i));
-            taskBank[g][i]=[];
-            for(let k=0;k<TASKS_PER_TOPIC;k++){
-                taskBank[g][i].push(generateTask(getTopicId(n),rng));
-            }
-        });
-    }
+function genTask(id,r){
+if(id==='add'){let a=1+r()*8|0,b=1+r()*8|0;return{q:`${a}+${b}`,a:a+b}}
+if(id==='sub'){let a=5+r()*5|0,b=1+r()*a|0;return{q:`${a}-${b}`,a:a-b}}
+if(id==='mul'){let a=2+r()*7|0,b=2+r()*7|0;return{q:`${a}×${b}`,a:a*b}}
+if(id==='div'){let b=2+r()*7|0,r2=2+r()*7|0;return{q:`${b*r2}÷${b}`,a:r2}}
+if(id==='perc'){let base=[100,200][r()*2|0],p=[10,20,50][r()*3|0];return{q:`${p}% от ${base}`,a:base*p/100}}
+if(id==='eq'){let x=1+r()*20|0,c=5+r()*15|0;return{q:`x+${c}=${x+c}`,a:x}}
+return{q:'1+1',a:2}
 }
 
-/* =========================================================
-   UI ЛОГИКА
-   ========================================================= */
-
-function init() {
-    document.getElementById('lang').onchange=e=>{
-        currentLanguage=e.target.value;
-        fillGrades();
-    };
-    fillGrades();
+function buildTaskBank(){
+const data=getTopics()
+for(let g=1;g<=7;g++){
+taskBank[g]={}
+data[g].forEach((t,i)=>{
+const r=rng(g*100+i*10)
+taskBank[g][i]=[]
+for(let k=0;k<TASKS_PER_TOPIC;k++){
+taskBank[g][i].push(genTask(topicId(t),r))
+}
+})
+}
 }
 
-function fillGrades() {
-    const gSel=document.getElementById('grade');
-    gSel.innerHTML='';
-    for(let i=1;i<=7;i++){
-        gSel.innerHTML+=`<option value="${i}">${i} класс</option>`;
-    }
-    gSel.onchange=fillTopics;
-    fillTopics();
+/* ================== ПРОГРЕСС ================== */
+const store=(k,v)=>v===undefined?JSON.parse(localStorage[k]||'{}'):(localStorage[k]=JSON.stringify(v))
+function progress(g,t){const d=store('p');return d[`${g}_${t}`]||{i:0}}
+function saveProgress(g,t,p){const d=store('p');d[`${g}_${t}`]=p;store('p',d)}
+
+/* ================== UI ================== */
+function fillGrades(){
+const g=document.getElementById('grade')
+g.innerHTML=''
+for(let i=1;i<=7;i++)g.innerHTML+=`<option>${i}</option>`
+g.onchange=()=>{currentGrade=+g.value;fillTopics()}
 }
 
-function fillTopics() {
-    currentGrade=document.getElementById('grade').value;
-    const tSel=document.getElementById('topic');
-    const list=currentLanguage==='ru'?topicsRu[currentGrade]:topics[currentGrade];
-    tSel.innerHTML='';
-    list.forEach(t=>tSel.innerHTML+=`<option>${t}</option>`);
+function fillTopics(){
+const t=document.getElementById('topic')
+t.innerHTML=''
+getTopics()[currentGrade].forEach((v,i)=>t.innerHTML+=`<option value="${i}">${v}</option>`)
+t.onchange=()=>currentTopicIndex=+t.value
+currentTopicIndex=0
 }
 
-function startLesson() {
-    currentGrade=document.getElementById('grade').value;
-    currentTopic=document.getElementById('topic').value;
-    buildTaskBank();
-    document.getElementById('lesson').style.display='block';
-    nextTask();
+function startLesson(){
+buildTaskBank()
+document.getElementById('lesson').style.display='block'
+nextTask()
 }
 
-function nextTask() {
-    const list=currentLanguage==='ru'?topicsRu[currentGrade]:topics[currentGrade];
-    const idx=list.indexOf(currentTopic);
-    const p=Progress.get(currentGrade,idx);
-    currentTask=taskBank[currentGrade][idx][p.i];
-    document.getElementById('taskText').innerText=currentTask.q;
-    document.getElementById('answer').value='';
-    document.getElementById('result').innerText='';
+function nextTask(){
+const p=progress(currentGrade,currentTopicIndex)
+currentTask=taskBank[currentGrade][currentTopicIndex][p.i]
+document.getElementById('task').innerText=currentTask.q
+document.getElementById('answer').value=''
+document.getElementById('result').innerText=''
 }
 
-function check() {
-    const ans=Number(document.getElementById('answer').value);
-    const list=currentLanguage==='ru'?topicsRu[currentGrade]:topics[currentGrade];
-    const idx=list.indexOf(currentTopic);
-    const p=Progress.get(currentGrade,idx);
-    if(ans===currentTask.a){
-        p.ok++;
-        document.getElementById('result').innerHTML='<span class="ok">Верно</span>';
-    } else {
-        p.bad++;
-        document.getElementById('result').innerHTML='<span class="bad">Неверно</span>';
-    }
-    p.i=(p.i+1)%TASKS_PER_TOPIC;
-    Progress.set(currentGrade,idx,p);
-    setTimeout(nextTask,800);
+function check(){
+const a=+document.getElementById('answer').value
+const res=document.getElementById('result')
+const p=progress(currentGrade,currentTopicIndex)
+if(a===currentTask.a){res.innerHTML='<span class=ok>Верно</span>'}
+else{res.innerHTML='<span class=bad>Неверно</span>'}
+p.i=(p.i+1)%TASKS_PER_TOPIC
+saveProgress(currentGrade,currentTopicIndex,p)
+setTimeout(nextTask,600)
 }
 
-init();
+/* ================== INIT ================== */
+document.getElementById('lang').onchange=e=>{
+currentLanguage=e.target.value
+fillGrades()
+fillTopics()
+}
+
+fillGrades()
+fillTopics()
 </script>
-
 </body>
 </html>
