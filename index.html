@@ -444,6 +444,7 @@
             </div>
         </div>
 
+        <!-- РАЗДЕЛ ДОСТИЖЕНИЙ - ДОБАВЬТЕ ЭТОТ БЛОК -->
         <div id="achievementsSection" class="stats-section">
             <div class="leaderboard">
                 <h2 style="color: #0077b6; margin-bottom: 20px;">🏆 Ваши достижения</h2>
@@ -454,6 +455,7 @@
             </div>
         </div>
 
+        <!-- РАЗДЕЛ ИСТОЧНИКОВ - ДОБАВЬТЕ ЭТОТ БЛОК -->
         <div id="sourcesSection" class="stats-section">
             <div class="sources-section">
                 <h2 style="color: #0077b6; margin-bottom: 25px;">📚 Учебные материалы и источники</h2>
@@ -641,8 +643,7 @@
             'first_50': { name: 'Ученик', desc: 'Решено 50 задач', icon: '🐣', threshold: 50 },
             'first_100': { name: 'Математик', desc: 'Решено 100 задач', icon: '🐥', threshold: 100 },
             'accuracy_90': { name: 'Точность', desc: 'Точность выше 90%', icon: '🎯', threshold: 0.9 },
-            'all_correct': { name: 'Идеально', desc: 'Все ответы верны в тесте', icon: '⭐', threshold: 1 },
-            'speed_demon': { name: 'Скорость', desc: 'Решить 5 задач за минуту', icon: '⚡', threshold: 5 }
+            'all_correct': { name: 'Идеально', desc: 'Все ответы верны в тесте', icon: '⭐', threshold: 1 }
         };
 
         let userAchievements = {};
@@ -765,21 +766,50 @@
             document.querySelector('label[for="studentName"]').innerHTML = lang.enterName;
             
             const tabs = document.querySelectorAll('.tab');
-            tabs[0].textContent = lang.practice;
-            tabs[1].textContent = lang.stats;
-            tabs[2].textContent = lang.achievements;
-            tabs[3].textContent = lang.sources;
+            if (tabs[0]) tabs[0].textContent = lang.practice;
+            if (tabs[1]) tabs[1].textContent = lang.stats;
+            if (tabs[2]) tabs[2].textContent = lang.achievements;
+            if (tabs[3]) tabs[3].textContent = lang.sources;
             
-            document.querySelector('.leaderboard h2').textContent = lang.leaderboard;
-            document.querySelector('#gradeSelection h2').textContent = lang.chooseGrade;
-            document.querySelector('#topicSelection h2').textContent = lang.chooseTopic;
-            document.querySelector('button[onclick="backToGrades()"]').textContent = lang.backToGrades;
-            document.querySelector('button[onclick="backToTopics()"]').textContent = lang.backToTopics;
-            document.querySelector('button[onclick="checkAllAnswers()"]').textContent = lang.checkAll;
-            document.querySelector('button[onclick="generateNewSet()"]').textContent = lang.newSet;
-            document.querySelector('button[onclick="startTimedTest()"]').textContent = lang.timedTest;
-            document.querySelector('#installPrompt div').textContent = lang.installText;
-            document.querySelector('.install-btn').textContent = lang.installBtn;
+            if (document.querySelector('.leaderboard h2')) {
+                document.querySelector('.leaderboard h2').textContent = lang.leaderboard;
+            }
+            
+            if (document.querySelector('#gradeSelection h2')) {
+                document.querySelector('#gradeSelection h2').textContent = lang.chooseGrade;
+            }
+            
+            if (document.querySelector('#topicSelection h2')) {
+                document.querySelector('#topicSelection h2').textContent = lang.chooseTopic;
+            }
+            
+            if (document.querySelector('button[onclick="backToGrades()"]')) {
+                document.querySelector('button[onclick="backToGrades()"]').textContent = lang.backToGrades;
+            }
+            
+            if (document.querySelector('button[onclick="backToTopics()"]')) {
+                document.querySelector('button[onclick="backToTopics()"]').textContent = lang.backToTopics;
+            }
+            
+            if (document.querySelector('button[onclick="checkAllAnswers()"]')) {
+                document.querySelector('button[onclick="checkAllAnswers()"]').textContent = lang.checkAll;
+            }
+            
+            if (document.querySelector('button[onclick="generateNewSet()"]')) {
+                document.querySelector('button[onclick="generateNewSet()"]').textContent = lang.newSet;
+            }
+            
+            if (document.querySelector('button[onclick="startTimedTest()"]')) {
+                document.querySelector('button[onclick="startTimedTest()"]').textContent = lang.timedTest;
+            }
+            
+            if (document.querySelector('#installPrompt div')) {
+                document.querySelector('#installPrompt div').textContent = lang.installText;
+            }
+            
+            if (document.querySelector('.install-btn')) {
+                document.querySelector('.install-btn').textContent = lang.installBtn;
+            }
             
             btn.textContent = currentLanguage === 'ru' ? '🇰🇿 Қазақша' : '🇷🇺 Русский';
             
@@ -854,7 +884,9 @@
 
         function stopTimer() {
             clearInterval(timerInterval);
-            document.getElementById('timerSection').style.display = 'none';
+            if (document.getElementById('timerSection')) {
+                document.getElementById('timerSection').style.display = 'none';
+            }
         }
 
         function startTimedTest() {
@@ -892,6 +924,9 @@
             
             if (tabMap[tab]) {
                 tabMap[tab]();
+            } else {
+                // Если что-то пошло не так, показываем практику
+                tabMap['practice']();
             }
         }
 
@@ -899,6 +934,8 @@
             const name = document.getElementById('studentName').value.trim();
             const list = document.getElementById('achievementsList');
             const noAch = document.getElementById('noAchievements');
+            
+            if (!list || !noAch) return;
             
             list.innerHTML = '';
             
@@ -944,6 +981,8 @@
         // Лидерборд
         function updateLeaderboard() {
             const tbody = document.getElementById('leaderboardBody');
+            if (!tbody) return;
+            
             tbody.innerHTML = '';
             
             const students = Object.entries(studentResults).map(([name, data]) => ({
@@ -996,7 +1035,10 @@
                 currentQuestions.push(generateQuestion());
             }
             renderQuestions();
-            document.getElementById('resultSummary').innerHTML = '';
+            const resultSummary = document.getElementById('resultSummary');
+            if (resultSummary) {
+                resultSummary.innerHTML = '';
+            }
         }
 
         function generateQuestion() {
@@ -1158,6 +1200,8 @@
         // Рендеринг вопросов
         function renderQuestions() {
             const grid = document.getElementById('questionsGrid');
+            if (!grid) return;
+            
             grid.innerHTML = '';
             
             currentQuestions.forEach((q, index) => {
@@ -1180,6 +1224,8 @@
         // Проверка ответов
         function checkSingleAnswer(index) {
             const input = document.getElementById(`answer${index}`);
+            if (!input) return;
+            
             const q = currentQuestions[index];
             const userAnswer = parseFloat(input.value);
             
@@ -1197,7 +1243,10 @@
         }
 
         function checkAllAnswers() {
-            const name = document.getElementById('studentName').value.trim();
+            const nameInput = document.getElementById('studentName');
+            if (!nameInput) return;
+            
+            const name = nameInput.value.trim();
             if (!name) {
                 alert('Пожалуйста, введите имя ученика!');
                 return;
@@ -1208,6 +1257,8 @@
             
             currentQuestions.forEach((q, index) => {
                 const input = document.getElementById(`answer${index}`);
+                if (!input) return;
+                
                 const userAnswer = parseFloat(input.value);
                 
                 if (!isNaN(userAnswer) && Math.abs(userAnswer - q.answer) < 0.01) {
@@ -1249,14 +1300,17 @@
             checkAchievements(name, correct, total, accuracy);
             
             // Показываем результат
-            const resultHTML = `
-                <strong>${name}</strong>: ${correct} из ${total} (${accuracy}%) • +${score} баллов 
-                ${correct === total ? '🎉 Отлично!' : correct >= total/2 ? '👍 Хорошо!' : '💪 Продолжайте тренироваться!'}
-            `;
-            document.getElementById('resultSummary').innerHTML = resultHTML;
+            const resultSummary = document.getElementById('resultSummary');
+            if (resultSummary) {
+                const resultHTML = `
+                    <strong>${name}</strong>: ${correct} из ${total} (${accuracy}%) • +${score} баллов 
+                    ${correct === total ? '🎉 Отлично!' : correct >= total/2 ? '👍 Хорошо!' : '💪 Продолжайте тренироваться!'}
+                `;
+                resultSummary.innerHTML = resultHTML;
+            }
             
             // Обновляем лидерборд, если открыта вкладка статистики
-            if (document.getElementById('statsSection').classList.contains('active')) {
+            if (document.getElementById('statsSection') && document.getElementById('statsSection').classList.contains('active')) {
                 updateLeaderboard();
             }
             
@@ -1313,6 +1367,8 @@
 
         function showAchievementNotification(achievementIds, studentName) {
             const summary = document.getElementById('resultSummary');
+            if (!summary) return;
+            
             let currentHTML = summary.innerHTML;
             
             achievementIds.forEach(achId => {
@@ -1323,7 +1379,7 @@
             summary.innerHTML = currentHTML;
             
             // Обновляем список достижений, если открыта вкладка
-            if (document.getElementById('achievementsSection').classList.contains('active')) {
+            if (document.getElementById('achievementsSection') && document.getElementById('achievementsSection').classList.contains('active')) {
                 showAchievements();
             }
         }
