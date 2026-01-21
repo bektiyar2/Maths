@@ -1,10 +1,10 @@
 const CACHE_NAME = 'math-kz-v2';
 const urlsToCache = [
-  '/',
-  '/index.html',
-  '/manifest.json',
-  '/icon-192.png',
-  '/icon-512.png'
+  './',
+  './index.html',
+  './manifest.json',
+  './icon-192.png',
+  './icon-512.png'
 ];
 
 // Установка Service Worker и кэширование
@@ -66,7 +66,7 @@ self.addEventListener('fetch', event => {
       })
       .catch(() => {
         // Возвращаем офлайн страницу если есть
-        return caches.match('/index.html');
+        return caches.match('./index.html');
       })
   );
 });
