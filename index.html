@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Math Master 1–7</title>
+    <title>Math Master PK</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#0077b6">
@@ -15,79 +15,161 @@
             --text: #2c3e50;
         }
 
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--bg); color: var(--text); margin: 0; display: flex; align-items: center; justify-content: center; min-height: 100vh; }
-        .card { background: #fff; width: 90%; max-width: 500px; padding: 30px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); text-align: center; transition: all 0.3s ease; }
-        h2 { margin-top: 0; color: var(--primary); font-size: 1.8rem; }
-        .form-group { text-align: left; margin-bottom: 15px; }
-        label { font-weight: bold; display: block; margin-bottom: 5px; font-size: 0.9rem; color: #7f8c8d; }
-        select, input { width: 100%; padding: 12px; border: 2px solid #eee; border-radius: 10px; font-size: 16px; box-sizing: border-box; outline: none; }
-        button { width: 100%; padding: 15px; background: var(--primary); color: #fff; border: none; border-radius: 10px; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 10px; }
-        .progress-container { width: 100%; height: 8px; background: #eee; border-radius: 4px; margin: 20px 0; overflow: hidden; }
-        .progress-bar { height: 100%; background: var(--success); width: 0%; transition: width 0.3s; }
-        .task-box { font-size: 2.5rem; font-weight: bold; margin: 30px 0; }
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background: var(--bg); 
+            color: var(--text); 
+            margin: 0; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            min-height: 100vh; 
+        }
+
+        .card { 
+            background: #fff; 
+            width: 90%; 
+            max-width: 500px; 
+            padding: 30px; 
+            border-radius: 20px; 
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1); 
+            text-align: center; 
+        }
+
         .hidden { display: none; }
-        #result-msg { font-weight: bold; margin: 10px 0; min-height: 24px; }
-        .ok { color: var(--success); }
-        .bad { color: var(--danger); }
+
+        select, input, button {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 10px;
+            border: 1px solid #ddd;
+            font-size: 1rem;
+        }
+
+        button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            transition: transform 0.2s;
+        }
+
+        button:active { transform: scale(0.98); }
+
+        .progress-container {
+            background: #eee;
+            height: 10px;
+            border-radius: 5px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            background: var(--success);
+            height: 100%;
+            width: 0%;
+            transition: width 0.3s;
+        }
+
+        #task-display { font-size: 2rem; margin: 20px 0; font-weight: bold; color: var(--primary); }
+        .ok { color: var(--success); font-weight: bold; }
+        .bad { color: var(--danger); font-weight: bold; }
     </style>
 </head>
 <body>
 
 <div class="card" id="setup-screen">
     <h2 id="ui-title">📘 Математика</h2>
-    <div class="form-group">
-        <label>Язык / Тіл</label>
-        <select id="lang-select"><option value="ru">Русский</option><option value="kk">Қазақша</option></select>
-    </div>
-    <div class="form-group"><label>Класс</label><select id="grade-select"></select></div>
-    <div class="form-group"><label>Тема</label><select id="topic-select"></select></div>
-    <button onclick="startLesson()" id="ui-start-btn">Начать</button>
+    
+    <label>Язык / Тіл:</label>
+    <select id="lang-select">
+        <option value="ru">Русский</option>
+        <option value="kk">Қазақша</option>
+    </select>
+
+    <label>Класс / Сынып:</label>
+    <select id="grade-select"></select>
+
+    <label>Тема / Тақырып:</label>
+    <select id="topic-select"></select>
+
+    <button id="ui-start-btn" onclick="startLesson()">Начать</button>
 </div>
 
 <div class="card hidden" id="lesson-screen">
     <div id="ui-counter">Вопрос 1 из 10</div>
     <div class="progress-container"><div class="progress-bar" id="pb"></div></div>
-    <div class="task-box" id="task-display"></div>
-    <input id="answer-input" type="number" step="any" placeholder="?">
-    <button onclick="checkAnswer()" id="ui-check-btn">Проверить</button>
+    
+    <div id="task-display"></div>
+    <input type="number" id="answer-input" placeholder="Ответ" inputmode="decimal">
+    
+    <button id="ui-check-btn" onclick="checkAnswer()">Проверить</button>
     <div id="result-msg"></div>
+    <button id="ui-back-btn" style="background:#95a5a6;" onclick="location.reload()">Назад</button>
 </div>
 
 <div class="card hidden" id="finish-screen">
-    <h2 id="ui-finish-title">Отлично! 🎉</h2>
-    <button onclick="resetApp()" id="ui-back-btn">Назад</button>
+    <h2 id="ui-finish-msg">Отлично! 🎉</h2>
+    <p>Вы завершили все задания.</p>
+    <button onclick="location.reload()">В меню</button>
 </div>
+
+
 
 <script>
 const UI_TEXT = {
-    ru: { title: "📘 Математика", start: "Начать", check: "Проверить", back: "Назад", correct: "Правильно!", wrong: "Ошибка! Ответ: " },
-    kk: { title: "📘 Математика", start: "Бастау", check: "Тексеру", back: "Артқа", correct: "Дұрыс!", wrong: "Қате! Жауабы: " }
+    ru: { title: "📘 Математика", start: "Начать", check: "Проверить", back: "Назад", correct: "Правильно!", wrong: "Ошибка! Ответ: ", finish: "Завершено!" },
+    kk: { title: "📘 Математика", start: "Бастау", check: "Тексеру", back: "Артқа", correct: "Дұрыс!", wrong: "Қате! Жауабы: ", finish: "Аяқталды!" }
 };
 
 const TOPICS = {
-    ru: { 1:['Сложение','Вычитание'], 2:['Умножение','Деление'], 3:['Сложение до 100','Задачи'], 4:['Периметр','Площадь'], 5:['Проценты','Уравнения'], 6:['Пропорции','Минус'], 7:['Уравнения','Степень'] },
-    kk: { 1:['Қосу','Азайту'], 2:['Көбейту','Бөлу'], 3:['100-ге дейін қосу','Есептер'], 4:['Периметр','Аудан'], 5:['Пайыздар','Теңдеулер'], 6:['Пропорциялар','Теріс сандар'], 7:['Теңдеулер','Дәреже'] }
+    ru: { 
+        1: ['Сложение', 'Вычитание'], 
+        2: ['Умножение', 'Деление'], 
+        3: ['Сложение до 100', 'Уравнения'], 
+        4: ['Площадь и Периметр', 'Многозначные числа'], 
+        5: ['Проценты', 'Десятичные дроби'], 
+        6: ['Пропорции', 'Отрицательные числа'], 
+        7: ['Линейные уравнения', 'Степени'] 
+    },
+    kk: { 
+        1: ['Қосу', 'Азайту'], 
+        2: ['Көбейту', 'Бөлу'], 
+        3: ['100-ге дейін қосу', 'Теңдеулер'], 
+        4: ['Аудан және Периметр', 'Көптаңбалы сандар'], 
+        5: ['Пайыздар', 'Ондық бөлшектер'], 
+        6: ['Пропорциялар', 'Теріс сандар'], 
+        7: ['Сызықтық теңдеулер', 'Дәрежелер'] 
+    }
 };
 
-let state = { lang: 'ru', grade: 1, currentStep: 0, maxSteps: 10, currentTask: null };
+let state = { lang: 'ru', grade: '1', currentStep: 0, maxSteps: 10, currentTask: null };
 
 function init() {
     const gSel = document.getElementById('grade-select');
-    for(let i=1; i<=7; i++) { gSel.add(new Option(i, i)); }
-    updateLanguage();
+    for(let i=1; i<=7; i++) { 
+        gSel.add(new Option(i + " класс", i)); 
+    }
     
-    // РЕГИСТРАЦИЯ SERVICE WORKER
+    document.getElementById('lang-select').onchange = updateLanguage;
+    document.getElementById('grade-select').onchange = updateTopics;
+    
+    updateLanguage(); // Первичная настройка
+
     if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('sw.js')
-            .then(reg => console.log('SW registered'))
-            .catch(err => console.log('SW error', err));
+        navigator.serviceWorker.register('sw.js').catch(err => console.log('SW error', err));
     }
 }
 
 function updateLanguage() {
     state.lang = document.getElementById('lang-select').value;
-    document.getElementById('ui-title').innerText = UI_TEXT[state.lang].title;
-    document.getElementById('ui-start-btn').innerText = UI_TEXT[state.lang].start;
+    const ui = UI_TEXT[state.lang];
+    document.getElementById('ui-title').innerText = ui.title;
+    document.getElementById('ui-start-btn').innerText = ui.start;
+    document.getElementById('ui-check-btn').innerText = ui.check;
+    document.getElementById('ui-back-btn').innerText = ui.back;
     updateTopics();
 }
 
@@ -95,7 +177,13 @@ function updateTopics() {
     state.grade = document.getElementById('grade-select').value;
     const tSel = document.getElementById('topic-select');
     tSel.innerHTML = '';
-    TOPICS[state.lang][state.grade].forEach((t, i) => tSel.add(new Option(t, i)));
+    
+    const currentGradeTopics = TOPICS[state.lang][state.grade];
+    if (currentGradeTopics) {
+        currentGradeTopics.forEach((t, i) => {
+            tSel.add(new Option(t, i));
+        });
+    }
 }
 
 function generateTask() {
@@ -111,9 +199,16 @@ function generateTask() {
         let a = r(8)+1, b = r(8)+1;
         return t === 0 ? {q: `${a} × ${b}`, a: a*b} : {q: `${a*b} ÷ ${a}`, a: b};
     }
-    // Универсальный генератор для остальных классов
+    if(g === 5 && t === 0) { // Проценты
+        let nums = [50, 100, 200, 500];
+        let n = nums[r(4)-1];
+        let p = [10, 20, 25, 50][r(4)-1];
+        return {q: `${p}% от ${n}`, a: (n * p) / 100};
+    }
+    
+    // Универсальный генератор уравнений для 3-7 классов
     let x = r(20), c = r(20);
-    return {q: `x + ${c} = ${x+c}`, a: x};
+    return {q: `x + ${c} = ${x+c}, x=?`, a: x};
 }
 
 function startLesson() {
@@ -134,25 +229,29 @@ function nextQuestion() {
     document.getElementById('answer-input').value = '';
     document.getElementById('result-msg').innerText = '';
     document.getElementById('pb').style.width = (state.currentStep / state.maxSteps * 100) + '%';
+    document.getElementById('ui-counter').innerText = 
+        (state.lang === 'ru' ? 'Вопрос ' : 'Сұрақ ') + (state.currentStep + 1) + ' / ' + state.maxSteps;
 }
 
 function checkAnswer() {
-    const userAns = parseFloat(document.getElementById('answer-input').value);
+    const input = document.getElementById('answer-input');
+    const userAns = parseFloat(input.value);
     if(isNaN(userAns)) return;
-    const resDiv = document.getElementById('result-msg');
     
+    const resDiv = document.getElementById('result-msg');
     if(userAns === state.currentTask.a) {
         resDiv.innerHTML = `<span class="ok">${UI_TEXT[state.lang].correct}</span>`;
     } else {
         resDiv.innerHTML = `<span class="bad">${UI_TEXT[state.lang].wrong} ${state.currentTask.a}</span>`;
     }
+    
     state.currentStep++;
     setTimeout(nextQuestion, 1500);
 }
 
-document.getElementById('lang-select').onchange = updateLanguage;
-document.getElementById('grade-select').onchange = updateTopics;
+// Запуск приложения
 init();
 </script>
+
 </body>
 </html>
