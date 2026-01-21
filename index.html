@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <title>Math Master 1–7</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0077b6">
     <style>
         :root {
             --primary: #4a90e2;
@@ -14,69 +16,38 @@
         }
 
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--bg); color: var(--text); margin: 0; display: flex; align-items: center; justify-content: center; min-height: 100vh; }
-        
         .card { background: #fff; width: 90%; max-width: 500px; padding: 30px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); text-align: center; transition: all 0.3s ease; }
-        
         h2 { margin-top: 0; color: var(--primary); font-size: 1.8rem; }
-        
         .form-group { text-align: left; margin-bottom: 15px; }
         label { font-weight: bold; display: block; margin-bottom: 5px; font-size: 0.9rem; color: #7f8c8d; }
-        
-        select, input { width: 100%; padding: 12px; border: 2px solid #eee; border-radius: 10px; font-size: 16px; box-sizing: border-box; outline: none; transition: border-color 0.3s; }
-        select:focus, input:focus { border-color: var(--primary); }
-        
-        button { width: 100%; padding: 15px; background: var(--primary); color: #fff; border: none; border-radius: 10px; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 10px; transition: transform 0.1s, opacity 0.3s; }
-        button:active { transform: scale(0.98); }
-        button:disabled { opacity: 0.5; cursor: not-allowed; }
-
+        select, input { width: 100%; padding: 12px; border: 2px solid #eee; border-radius: 10px; font-size: 16px; box-sizing: border-box; outline: none; }
+        button { width: 100%; padding: 15px; background: var(--primary); color: #fff; border: none; border-radius: 10px; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 10px; }
         .progress-container { width: 100%; height: 8px; background: #eee; border-radius: 4px; margin: 20px 0; overflow: hidden; }
         .progress-bar { height: 100%; background: var(--success); width: 0%; transition: width 0.3s; }
-
-        .task-box { font-size: 2.5rem; font-weight: bold; margin: 30px 0; color: var(--text); }
-        
+        .task-box { font-size: 2.5rem; font-weight: bold; margin: 30px 0; }
+        .hidden { display: none; }
         #result-msg { font-weight: bold; margin: 10px 0; min-height: 24px; }
         .ok { color: var(--success); }
         .bad { color: var(--danger); }
-
-        .hidden { display: none; }
-        
-        .stats { font-size: 0.9rem; color: #7f8c8d; margin-bottom: 10px; }
     </style>
 </head>
 <body>
 
 <div class="card" id="setup-screen">
     <h2 id="ui-title">📘 Математика</h2>
-    
     <div class="form-group">
-        <label id="ui-lang-label">Язык / Тіл</label>
-        <select id="lang-select">
-            <option value="ru">Русский</option>
-            <option value="kk">Қазақша</option>
-        </select>
+        <label>Язык / Тіл</label>
+        <select id="lang-select"><option value="ru">Русский</option><option value="kk">Қазақша</option></select>
     </div>
-
-    <div class="form-group">
-        <label id="ui-grade-label">Класс</label>
-        <select id="grade-select"></select>
-    </div>
-
-    <div class="form-group">
-        <label id="ui-topic-label">Тема</label>
-        <select id="topic-select"></select>
-    </div>
-
+    <div class="form-group"><label>Класс</label><select id="grade-select"></select></div>
+    <div class="form-group"><label>Тема</label><select id="topic-select"></select></div>
     <button onclick="startLesson()" id="ui-start-btn">Начать</button>
 </div>
 
 <div class="card hidden" id="lesson-screen">
-    <div class="stats" id="ui-counter">Вопрос 1 из 10</div>
-    <div class="progress-container">
-        <div class="progress-bar" id="pb"></div>
-    </div>
-    
+    <div id="ui-counter">Вопрос 1 из 10</div>
+    <div class="progress-container"><div class="progress-bar" id="pb"></div></div>
     <div class="task-box" id="task-display"></div>
-    
     <input id="answer-input" type="number" step="any" placeholder="?">
     <button onclick="checkAnswer()" id="ui-check-btn">Проверить</button>
     <div id="result-msg"></div>
@@ -84,126 +55,69 @@
 
 <div class="card hidden" id="finish-screen">
     <h2 id="ui-finish-title">Отлично! 🎉</h2>
-    <p id="ui-finish-msg">Урок завершен. Ты отлично справился!</p>
-    <button onclick="resetApp()" id="ui-back-btn">Назад в меню</button>
+    <button onclick="resetApp()" id="ui-back-btn">Назад</button>
 </div>
 
 <script>
-/* ================== КОНФИГУРАЦИЯ И ДАННЫЕ ================== */
 const UI_TEXT = {
-    ru: {
-        title: "📘 Математика", lang: "Язык", grade: "Класс", topic: "Тема", 
-        start: "Начать", check: "Проверить", back: "Назад в меню",
-        qCount: "Вопрос", finish: "Отлично! 🎉", finishMsg: "Урок завершен!",
-        correct: "Правильно!", wrong: "Ошибка. Правильный ответ: "
-    },
-    kk: {
-        title: "📘 Математика", lang: "Тіл", grade: "Сынып", topic: "Тақырып", 
-        start: "Бастау", check: "Тексеру", back: "Мәзірге оралу",
-        qCount: "Сұрақ", finish: "Жарайсың! 🎉", finishMsg: "Сабақ аяқталды!",
-        correct: "Дұрыс!", wrong: "Қате. Дұрыс жауабы: "
-    }
+    ru: { title: "📘 Математика", start: "Начать", check: "Проверить", back: "Назад", correct: "Правильно!", wrong: "Ошибка! Ответ: " },
+    kk: { title: "📘 Математика", start: "Бастау", check: "Тексеру", back: "Артқа", correct: "Дұрыс!", wrong: "Қате! Жауабы: " }
 };
 
 const TOPICS = {
-    ru: {
-        1:['Сложение до 10','Вычитание до 10'],
-        2:['Таблица умножения','Деление'],
-        3:['Сложение и вычитание (100)','Текстовые задачи'],
-        4:['Периметр','Площадь прямоугольника'],
-        5:['Проценты','Уравнения'],
-        6:['Пропорции','Отрицательные числа'],
-        7:['Линейные уравнения','Степень числа']
-    },
-    kk: {
-        1:['10-ға дейін қосу','10-ға дейін азайту'],
-        2:['Көбейту кестесі','Бөлу'],
-        3:['Қосу және азайту (100)','Мәтінді есептер'],
-        4:['Периметр','Тіктөртбұрыш ауданы'],
-        5:['Пайыздар','Теңдеулер'],
-        6:['Пропорциялар','Теріс сандар'],
-        7:['Сызықтық теңдеулер','Санның дәрежесі']
-    }
+    ru: { 1:['Сложение','Вычитание'], 2:['Умножение','Деление'], 3:['Сложение до 100','Задачи'], 4:['Периметр','Площадь'], 5:['Проценты','Уравнения'], 6:['Пропорции','Минус'], 7:['Уравнения','Степень'] },
+    kk: { 1:['Қосу','Азайту'], 2:['Көбейту','Бөлу'], 3:['100-ге дейін қосу','Есептер'], 4:['Периметр','Аудан'], 5:['Пайыздар','Теңдеулер'], 6:['Пропорциялар','Теріс сандар'], 7:['Теңдеулер','Дәреже'] }
 };
 
-/* ================== ЛОГИКА ПРИЛОЖЕНИЯ ================== */
-let state = {
-    lang: 'ru',
-    grade: 1,
-    topicIdx: 0,
-    currentStep: 0,
-    maxSteps: 10,
-    currentTask: null
-};
+let state = { lang: 'ru', grade: 1, currentStep: 0, maxSteps: 10, currentTask: null };
 
-// Инициализация
 function init() {
-    const gradeSel = document.getElementById('grade-select');
-    for(let i=1; i<=7; i++) {
-        let opt = document.createElement('option');
-        opt.value = i; opt.innerText = i;
-        gradeSel.appendChild(opt);
-    }
+    const gSel = document.getElementById('grade-select');
+    for(let i=1; i<=7; i++) { gSel.add(new Option(i, i)); }
     updateLanguage();
+    
+    // РЕГИСТРАЦИЯ SERVICE WORKER
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('sw.js')
+            .then(reg => console.log('SW registered'))
+            .catch(err => console.log('SW error', err));
+    }
 }
 
 function updateLanguage() {
     state.lang = document.getElementById('lang-select').value;
-    const ui = UI_TEXT[state.lang];
-    
-    document.getElementById('ui-title').innerText = ui.title;
-    document.getElementById('ui-grade-label').innerText = ui.grade;
-    document.getElementById('ui-topic-label').innerText = ui.topic;
-    document.getElementById('ui-start-btn').innerText = ui.start;
-    
+    document.getElementById('ui-title').innerText = UI_TEXT[state.lang].title;
+    document.getElementById('ui-start-btn').innerText = UI_TEXT[state.lang].start;
     updateTopics();
 }
 
 function updateTopics() {
     state.grade = document.getElementById('grade-select').value;
-    const topicSel = document.getElementById('topic-select');
-    topicSel.innerHTML = '';
-    
-    TOPICS[state.lang][state.grade].forEach((t, i) => {
-        let opt = document.createElement('option');
-        opt.value = i; opt.innerText = t;
-        topicSel.appendChild(opt);
-    });
+    const tSel = document.getElementById('topic-select');
+    tSel.innerHTML = '';
+    TOPICS[state.lang][state.grade].forEach((t, i) => tSel.add(new Option(t, i)));
 }
 
-/* ================== ГЕНЕРАТОР ЗАДАЧ ================== */
 function generateTask() {
     const g = parseInt(state.grade);
     const t = parseInt(document.getElementById('topic-select').value);
-    const r = (m) => Math.floor(Math.random() * m);
+    const r = (m) => Math.floor(Math.random() * m) + 1;
     
-    // Простая логика определения типа задачи по классу и индексу темы
     if(g === 1) {
-        let a = r(9)+1, b = r(9)+1;
+        let a = r(9), b = r(9);
         return t === 0 ? {q: `${a} + ${b}`, a: a+b} : {q: `${a+b} - ${a}`, a: b};
     }
     if(g === 2) {
-        let a = r(7)+2, b = r(7)+2;
+        let a = r(8)+1, b = r(8)+1;
         return t === 0 ? {q: `${a} × ${b}`, a: a*b} : {q: `${a*b} ÷ ${a}`, a: b};
     }
-    if(g === 4) {
-        let a = r(15)+2, b = r(10)+2;
-        return t === 0 ? {q: `P (a=${a}, b=${b})`, a: 2*(a+b)} : {q: `S (a=${a}, b=${b})`, a: a*b};
-    }
-    if(g === 5 && t === 0) {
-        let bases = [100, 200, 50, 400], p = [10, 20, 25, 50];
-        let b = bases[r(4)], per = p[r(4)];
-        return {q: `${per}% от ${b}`, a: b * per / 100};
-    }
-    // Универсальное уравнение для 5-7 классов
-    let x = r(20)+1, c = r(20)+1;
+    // Универсальный генератор для остальных классов
+    let x = r(20), c = r(20);
     return {q: `x + ${c} = ${x+c}`, a: x};
 }
 
-/* ================== ИГРОВОЙ ПРОЦЕСС ================== */
 function startLesson() {
     state.currentStep = 0;
-    state.topicIdx = document.getElementById('topic-select').value;
     document.getElementById('setup-screen').classList.add('hidden');
     document.getElementById('lesson-screen').classList.remove('hidden');
     nextQuestion();
@@ -211,59 +125,33 @@ function startLesson() {
 
 function nextQuestion() {
     if(state.currentStep >= state.maxSteps) {
-        showFinish();
+        document.getElementById('lesson-screen').classList.add('hidden');
+        document.getElementById('finish-screen').classList.remove('hidden');
         return;
     }
-    
     state.currentTask = generateTask();
     document.getElementById('task-display').innerText = state.currentTask.q;
     document.getElementById('answer-input').value = '';
     document.getElementById('result-msg').innerText = '';
-    document.getElementById('ui-counter').innerText = `${UI_TEXT[state.lang].qCount} ${state.currentStep + 1} / ${state.maxSteps}`;
     document.getElementById('pb').style.width = (state.currentStep / state.maxSteps * 100) + '%';
-    document.getElementById('answer-input').focus();
 }
 
 function checkAnswer() {
     const userAns = parseFloat(document.getElementById('answer-input').value);
-    const resDiv = document.getElementById('result-msg');
-    const btn = document.getElementById('ui-check-btn');
-    
     if(isNaN(userAns)) return;
-
-    btn.disabled = true;
+    const resDiv = document.getElementById('result-msg');
+    
     if(userAns === state.currentTask.a) {
         resDiv.innerHTML = `<span class="ok">${UI_TEXT[state.lang].correct}</span>`;
     } else {
         resDiv.innerHTML = `<span class="bad">${UI_TEXT[state.lang].wrong} ${state.currentTask.a}</span>`;
     }
-
     state.currentStep++;
-    setTimeout(() => {
-        btn.disabled = false;
-        nextQuestion();
-    }, 1500);
+    setTimeout(nextQuestion, 1500);
 }
 
-function showFinish() {
-    document.getElementById('lesson-screen').classList.add('hidden');
-    document.getElementById('finish-screen').classList.remove('hidden');
-    const ui = UI_TEXT[state.lang];
-    document.getElementById('ui-finish-title').innerText = ui.finish;
-    document.getElementById('ui-finish-msg').innerText = ui.finishMsg;
-    document.getElementById('ui-back-btn').innerText = ui.back;
-}
-
-function resetApp() {
-    document.getElementById('finish-screen').classList.add('hidden');
-    document.getElementById('setup-screen').classList.remove('hidden');
-}
-
-// Привязка событий
 document.getElementById('lang-select').onchange = updateLanguage;
 document.getElementById('grade-select').onchange = updateTopics;
-document.getElementById('answer-input').onkeypress = (e) => { if(e.key === 'Enter') checkAnswer(); };
-
 init();
 </script>
 </body>
