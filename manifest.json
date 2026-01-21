@@ -1,9 +1,8 @@
 {
-  "name": "Математика Казахстан - 1-7 классы",
+  "name": "Математика - Казахстан",
   "short_name": "Математика РК",
-  "description": "Математика для школьников 1-7 классов по программе МОН РК с таблицей лидеров",
-  "start_url": "./",
-  "scope": "./",
+  "description": "Математика для школьников 1-7 классов по программе Министерства образования РК",
+  "start_url": "/",
   "display": "standalone",
   "background_color": "#0077b6",
   "theme_color": "#0077b6",
@@ -22,7 +21,41 @@
       "purpose": "any maskable"
     }
   ],
-  "categories": ["education", "kids"],
+  "categories": ["education", "kids", "mathematics"],
   "lang": "ru",
-  "screenshots": []
+  "dir": "ltr",
+  "scope": "/",
+  "prefer_related_applications": false,
+  "shortcuts": [
+    {
+      "name": "Начать практику",
+      "short_name": "Практика",
+      "description": "Начать решать задачи",
+      "url": "/?practice",
+      "icons": [{ "src": "icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Таблица лидеров",
+      "short_name": "Лидеры",
+      "description": "Посмотреть статистику",
+      "url": "/?stats",
+      "icons": [{ "src": "icon-192.png", "sizes": "192x192" }]
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "screenshot-desktop.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Математика РК на компьютере"
+    },
+    {
+      "src": "screenshot-mobile.png",
+      "sizes": "750x1334",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Математика РК на телефоне"
+    }
+  ]
 }

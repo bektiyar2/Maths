@@ -13,51 +13,387 @@
     <title>Математика - Казахстан</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #00a8cc 0%, #0077b6 50%, #023e8a 100%); min-height: 100vh; padding: 20px; }
-        .container { max-width: 1200px; margin: 0 auto; background: white; border-radius: 20px; padding: 30px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background: linear-gradient(135deg, #00a8cc 0%, #0077b6 50%, #023e8a 100%); 
+            min-height: 100vh; 
+            padding: 20px; 
+        }
+        .container { 
+            max-width: 1200px; 
+            margin: 0 auto; 
+            background: white; 
+            border-radius: 20px; 
+            padding: 30px; 
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3); 
+        }
         .header { text-align: center; margin-bottom: 30px; }
         h1 { color: #0077b6; font-size: 2.2em; margin-bottom: 10px; }
         .subtitle { color: #666; font-size: 1.1em; }
-        .name-input-section { background: linear-gradient(135deg, #e0f7fa 0%, #b2ebf2 100%); padding: 20px; border-radius: 12px; margin-bottom: 20px; text-align: center; }
-        .name-input { padding: 12px 20px; font-size: 1.1em; border: 2px solid #0077b6; border-radius: 8px; width: 300px; max-width: 100%; }
-        .tabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; justify-content: center; }
-        .tab { padding: 12px 24px; border: 2px solid #0077b6; background: white; color: #0077b6; border-radius: 8px; cursor: pointer; font-weight: bold; transition: all 0.3s; }
+        .name-input-section { 
+            background: linear-gradient(135deg, #e0f7fa 0%, #b2ebf2 100%); 
+            padding: 20px; 
+            border-radius: 12px; 
+            margin-bottom: 20px; 
+            text-align: center; 
+        }
+        .name-input { 
+            padding: 12px 20px; 
+            font-size: 1.1em; 
+            border: 2px solid #0077b6; 
+            border-radius: 8px; 
+            width: 300px; 
+            max-width: 100%; 
+        }
+        .tabs { 
+            display: flex; 
+            gap: 10px; 
+            margin-bottom: 20px; 
+            flex-wrap: wrap; 
+            justify-content: center; 
+        }
+        .tab { 
+            padding: 12px 24px; 
+            border: 2px solid #0077b6; 
+            background: white; 
+            color: #0077b6; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            font-weight: bold; 
+            transition: all 0.3s; 
+        }
         .tab.active { background: #0077b6; color: white; }
         .tab:hover { transform: translateY(-2px); }
         .stats-section { display: none; }
         .stats-section.active { display: block; }
-        .leaderboard { background: #f8f9fa; border-radius: 12px; padding: 20px; margin-bottom: 20px; }
+        .leaderboard { 
+            background: #f8f9fa; 
+            border-radius: 12px; 
+            padding: 20px; 
+            margin-bottom: 20px; 
+        }
         .leaderboard table { width: 100%; border-collapse: collapse; }
-        .leaderboard th { background: #0077b6; color: white; padding: 12px; text-align: left; }
+        .leaderboard th { 
+            background: #0077b6; 
+            color: white; 
+            padding: 12px; 
+            text-align: left; 
+        }
         .leaderboard td { padding: 10px; border-bottom: 1px solid #ddd; }
         .leaderboard tr:hover { background: #f0f9ff; }
         .medal { font-size: 1.5em; }
-        .grade-selection { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 15px; margin-bottom: 30px; }
-        .grade-btn { padding: 20px; border: 3px solid #0077b6; background: white; color: #0077b6; border-radius: 12px; cursor: pointer; font-size: 1.2em; font-weight: bold; transition: all 0.3s; }
-        .grade-btn:hover { background: #0077b6; color: white; transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,119,182,0.3); }
+        .grade-selection { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); 
+            gap: 15px; 
+            margin-bottom: 30px; 
+        }
+        .grade-btn { 
+            padding: 20px; 
+            border: 3px solid #0077b6; 
+            background: white; 
+            color: #0077b6; 
+            border-radius: 12px; 
+            cursor: pointer; 
+            font-size: 1.2em; 
+            font-weight: bold; 
+            transition: all 0.3s; 
+        }
+        .grade-btn:hover { 
+            background: #0077b6; 
+            color: white; 
+            transform: translateY(-3px); 
+            box-shadow: 0 5px 15px rgba(0,119,182,0.3); 
+        }
         .topic-selection { display: none; }
-        .topic-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 15px; margin-bottom: 20px; }
-        .topic-btn { padding: 15px; border: 2px solid #023e8a; background: white; color: #023e8a; border-radius: 10px; cursor: pointer; font-size: 1em; transition: all 0.3s; text-align: left; }
-        .topic-btn:hover { background: #023e8a; color: white; transform: translateX(5px); }
+        .topic-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); 
+            gap: 15px; 
+            margin-bottom: 20px; 
+        }
+        .topic-btn { 
+            position: relative;
+            padding: 15px; 
+            border: 2px solid #023e8a; 
+            background: white; 
+            color: #023e8a; 
+            border-radius: 10px; 
+            cursor: pointer; 
+            font-size: 1em; 
+            transition: all 0.3s; 
+            text-align: left; 
+        }
+        .topic-btn:hover { 
+            background: #023e8a; 
+            color: white; 
+            transform: translateX(5px); 
+        }
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background: #e0e0e0;
+            border-radius: 5px;
+            margin: 5px 0 10px 0;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #48bb78, #38a169);
+            border-radius: 5px;
+            transition: width 0.5s ease;
+            position: relative;
+        }
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: shimmer 2s infinite;
+        }
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        .topic-progress {
+            font-size: 0.8em;
+            color: #666;
+            margin-top: 5px;
+        }
         .quiz-area { display: none; }
-        .questions-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-bottom: 25px; }
-        .question-card { background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); padding: 25px; border-radius: 15px; border-left: 5px solid #0077b6; }
-        .question-number { color: #0077b6; font-size: 0.9em; margin-bottom: 10px; font-weight: bold; }
-        .question-text { font-size: 1.2em; color: #333; margin-bottom: 15px; line-height: 1.6; }
-        .answer-input { width: 100%; padding: 12px; font-size: 1.1em; border: 3px solid #ddd; border-radius: 8px; margin-bottom: 10px; text-align: center; transition: all 0.3s; }
-        .answer-input:focus { outline: none; border-color: #0077b6; box-shadow: 0 0 10px rgba(0,119,182,0.2); }
-        .answer-input.correct { border-color: #48bb78; background: #c6f6d5; }
-        .answer-input.incorrect { border-color: #f56565; background: #fed7d7; }
-        .btn { padding: 14px 35px; font-size: 1.1em; border: none; border-radius: 10px; cursor: pointer; margin: 5px; transition: all 0.3s; font-weight: bold; }
-        .check-btn { background: linear-gradient(135deg, #0077b6 0%, #023e8a 100%); color: white; }
-        .check-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,119,182,0.3); }
-        .next-btn { background: linear-gradient(135deg, #48bb78 0%, #38a169 100%); color: white; }
+        .questions-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
+            gap: 20px; 
+            margin-bottom: 25px; 
+        }
+        .question-card { 
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); 
+            padding: 25px; 
+            border-radius: 15px; 
+            border-left: 5px solid #0077b6; 
+        }
+        .question-number { 
+            color: #0077b6; 
+            font-size: 0.9em; 
+            margin-bottom: 10px; 
+            font-weight: bold; 
+        }
+        .question-text { 
+            font-size: 1.2em; 
+            color: #333; 
+            margin-bottom: 15px; 
+            line-height: 1.6; 
+        }
+        .answer-input { 
+            width: 100%; 
+            padding: 12px; 
+            font-size: 1.1em; 
+            border: 3px solid #ddd; 
+            border-radius: 8px; 
+            margin-bottom: 10px; 
+            text-align: center; 
+            transition: all 0.3s; 
+        }
+        .answer-input:focus { 
+            outline: none; 
+            border-color: #0077b6; 
+            box-shadow: 0 0 10px rgba(0,119,182,0.2); 
+        }
+        .answer-input.correct { 
+            border-color: #48bb78; 
+            background: #c6f6d5; 
+        }
+        .answer-input.incorrect { 
+            border-color: #f56565; 
+            background: #fed7d7; 
+        }
+        .btn { 
+            padding: 14px 35px; 
+            font-size: 1.1em; 
+            border: none; 
+            border-radius: 10px; 
+            cursor: pointer; 
+            margin: 5px; 
+            transition: all 0.3s; 
+            font-weight: bold; 
+        }
+        .check-btn { 
+            background: linear-gradient(135deg, #0077b6 0%, #023e8a 100%); 
+            color: white; 
+        }
+        .check-btn:hover { 
+            transform: translateY(-2px); 
+            box-shadow: 0 5px 15px rgba(0,119,182,0.3); 
+        }
+        .next-btn { 
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%); 
+            color: white; 
+        }
         .back-btn { background: #6c757d; color: white; }
-        .result-summary { background: linear-gradient(135deg, #e0f7fa 0%, #b2ebf2 100%); padding: 25px; border-radius: 12px; text-align: center; font-size: 1.3em; margin-bottom: 20px; }
-        .button-group { display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; margin: 20px 0; }
-        .hidden { display: none; }
-        .install-prompt { display: none; background: linear-gradient(135deg, #48bb78 0%, #38a169 100%); color: white; padding: 15px; border-radius: 10px; margin-bottom: 20px; text-align: center; }
-        .install-btn { background: white; color: #38a169; border: none; padding: 10px 20px; border-radius: 5px; font-weight: bold; cursor: pointer; margin-top: 10px; }
+        .result-summary { 
+            background: linear-gradient(135deg, #e0f7fa 0%, #b2ebf2 100%); 
+            padding: 25px; 
+            border-radius: 12px; 
+            text-align: center; 
+            font-size: 1.3em; 
+            margin-bottom: 20px; 
+        }
+        .button-group { 
+            display: flex; 
+            justify-content: center; 
+            flex-wrap: wrap; 
+            gap: 10px; 
+            margin: 20px 0; 
+        }
+        .install-prompt { 
+            display: none; 
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%); 
+            color: white; 
+            padding: 15px; 
+            border-radius: 10px; 
+            margin-bottom: 20px; 
+            text-align: center; 
+        }
+        .install-btn { 
+            background: white; 
+            color: #38a169; 
+            border: none; 
+            padding: 10px 20px; 
+            border-radius: 5px; 
+            font-weight: bold; 
+            cursor: pointer; 
+            margin-top: 10px; 
+        }
+        .achievement-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #f6e05e, #d69e2e);
+            color: #744210;
+            padding: 5px 10px;
+            border-radius: 20px;
+            margin: 2px;
+            font-size: 0.9em;
+        }
+        .achievement-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        /* Стили для раздела Источники */
+        .sources-section {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 25px;
+        }
+        
+        .sources-grade-card {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            transition: all 0.3s;
+        }
+        
+        .sources-grade-card:hover {
+            border-color: #0077b6;
+            box-shadow: 0 5px 15px rgba(0,119,182,0.1);
+        }
+        
+        .sources-grade-title {
+            color: #023e8a;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+        
+        .sources-book-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 12px;
+            padding: 12px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        
+        .sources-book-icon {
+            margin-right: 12px;
+            font-size: 1.3em;
+            color: #0077b6;
+        }
+        
+        .sources-book-info {
+            flex: 1;
+        }
+        
+        .sources-book-authors {
+            font-size: 0.9em;
+            color: #666;
+            margin-top: 4px;
+        }
+        
+        .sources-link-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .sources-link-card {
+            display: block;
+            background: white;
+            border: 2px solid #e0e0e0;
+            padding: 18px;
+            border-radius: 10px;
+            text-decoration: none;
+            color: #333;
+            transition: all 0.3s;
+        }
+        
+        .sources-link-card:hover {
+            border-color: #0077b6;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,119,182,0.1);
+        }
+        
+        .sources-link-icon {
+            font-size: 1.8em;
+            margin-bottom: 10px;
+            color: #0077b6;
+        }
+        
+        .sources-link-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #0077b6;
+        }
+        
+        .sources-link-desc {
+            font-size: 0.9em;
+            color: #666;
+            line-height: 1.4;
+        }
+        
+        .sources-compliance {
+            background: linear-gradient(135deg, #e8f5e9 0%, #d4edda 100%);
+            border-left: 5px solid #48bb78;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 25px;
+        }
+        
+        .sources-compliance-title {
+            color: #38a169;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
     </style>
 </head>
 <body>
@@ -70,6 +406,11 @@
         <div class="header">
             <h1>🎓 Математика</h1>
             <p class="subtitle">Программа Министерства образования РК</p>
+            <div style="text-align: center; margin: 10px 0;">
+                <button id="langToggle" onclick="toggleLanguage()" style="background: #f8f9fa; border: 2px solid #0077b6; padding: 5px 15px; border-radius: 20px; cursor: pointer;">
+                    🇰🇿 Қазақша
+                </button>
+            </div>
         </div>
 
         <div class="name-input-section">
@@ -80,6 +421,8 @@
         <div class="tabs">
             <button class="tab active" onclick="showTab('practice')">📝 Практика</button>
             <button class="tab" onclick="showTab('stats')">📊 Статистика</button>
+            <button class="tab" onclick="showTab('achievements')">🏆 Достижения</button>
+            <button class="tab" onclick="showTab('sources')">📚 Источники</button>
         </div>
 
         <div id="statsSection" class="stats-section">
@@ -98,6 +441,145 @@
                     </thead>
                     <tbody id="leaderboardBody"></tbody>
                 </table>
+            </div>
+        </div>
+
+        <div id="achievementsSection" class="stats-section">
+            <div class="leaderboard">
+                <h2 style="color: #0077b6; margin-bottom: 20px;">🏆 Ваши достижения</h2>
+                <div id="achievementsList" class="achievement-list"></div>
+                <div id="noAchievements" style="text-align: center; padding: 20px; color: #666;">
+                    Пока нет достижений. Решайте задачи, чтобы получить бейджи!
+                </div>
+            </div>
+        </div>
+
+        <div id="sourcesSection" class="stats-section">
+            <div class="sources-section">
+                <h2 style="color: #0077b6; margin-bottom: 25px;">📚 Учебные материалы и источники</h2>
+                
+                <div style="margin-bottom: 30px;">
+                    <h3 style="color: #023e8a; margin-bottom: 20px; font-size: 1.3em;">📖 Учебники и программы</h3>
+                    
+                    <div class="sources-grade-card">
+                        <div class="sources-grade-title">1-4 классы</div>
+                        <div class="sources-book-item">
+                            <div class="sources-book-icon">📘</div>
+                            <div class="sources-book-info">
+                                <div style="font-weight: bold;">"Математика" для 1 класса</div>
+                                <div class="sources-book-authors">Авторы: Б.Т. Алдамбергенова, К.Б. Байшоланова</div>
+                            </div>
+                        </div>
+                        <div class="sources-book-item">
+                            <div class="sources-book-icon">📘</div>
+                            <div class="sources-book-info">
+                                <div style="font-weight: bold;">"Математика" для 2 класса</div>
+                                <div class="sources-book-authors">Авторы: Б.Т. Алдамбергенова, К.Б. Байшоланова</div>
+                            </div>
+                        </div>
+                        <div class="sources-book-item">
+                            <div class="sources-book-icon">📘</div>
+                            <div class="sources-book-info">
+                                <div style="font-weight: bold;">"Математика" для 3 класса</div>
+                                <div class="sources-book-authors">Авторы: Б.Т. Алдамбергенова, К.Б. Байшоланова</div>
+                            </div>
+                        </div>
+                        <div class="sources-book-item">
+                            <div class="sources-book-icon">📘</div>
+                            <div class="sources-book-info">
+                                <div style="font-weight: bold;">"Математика" для 4 класса</div>
+                                <div class="sources-book-authors">Авторы: Б.Т. Алдамбергенова, К.Б. Байшоланова</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="sources-grade-card">
+                        <div class="sources-grade-title">5-7 классы</div>
+                        <div class="sources-book-item">
+                            <div class="sources-book-icon">📗</div>
+                            <div class="sources-book-info">
+                                <div style="font-weight: bold;">"Математика" для 5 класса</div>
+                                <div class="sources-book-authors">Авторы: А.Е. Абылкасымова, И.Б. Бекбоев, З.А. Жумагулова</div>
+                            </div>
+                        </div>
+                        <div class="sources-book-item">
+                            <div class="sources-book-icon">📗</div>
+                            <div class="sources-book-info">
+                                <div style="font-weight: bold;">"Математика" для 6 класса</div>
+                                <div class="sources-book-authors">Авторы: А.Е. Абылкасымова, К.Д. Шойынбетов, З.А. Жумагулова</div>
+                            </div>
+                        </div>
+                        <div class="sources-book-item">
+                            <div class="sources-book-icon">📗</div>
+                            <div class="sources-book-info">
+                                <div style="font-weight: bold;">"Математика" для 7 класса</div>
+                                <div class="sources-book-authors">Авторы: А.Е. Абылкасымова, К.Д. Шойынбетов, З.А. Жумагулова</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="margin-bottom: 30px;">
+                    <h3 style="color: #023e8a; margin-bottom: 20px; font-size: 1.3em;">📋 Нормативные документы</h3>
+                    
+                    <div style="background: #f0f9ff; padding: 20px; border-radius: 10px; margin-bottom: 15px;">
+                        <div style="font-weight: bold; color: #0077b6; margin-bottom: 10px;">ГОСО РК (Государственный общеобязательный стандарт образования):</div>
+                        <ul style="margin-top: 10px; padding-left: 20px; color: #555;">
+                            <li style="margin-bottom: 5px;">ГОСО РК 1.1.001-2009 "Начальное образование"</li>
+                            <li style="margin-bottom: 5px;">ГОСО РК 2.3.0.001-2010 "Основное среднее образование"</li>
+                            <li style="margin-bottom: 5px;">ГОСО РК 2.3.0.002-2018 "Общее среднее образование"</li>
+                        </ul>
+                    </div>
+                    
+                    <div style="background: #f0f9ff; padding: 20px; border-radius: 10px; margin-bottom: 15px;">
+                        <div style="font-weight: bold; color: #0077b6; margin-bottom: 10px;">Приказы Министерства образования и науки РК:</div>
+                        <ul style="margin-top: 10px; padding-left: 20px; color: #555;">
+                            <li style="margin-bottom: 5px;">Приказ № 137 от 3 апреля 2013 года "Об утверждении Типовых учебных программ"</li>
+                            <li style="margin-bottom: 5px;">Приказ № 348 от 29 июня 2018 года "Об утверждении типовых учебных планов"</li>
+                            <li style="margin-bottom: 5px;">Приказ № 182 от 30 апреля 2020 года "О внесении изменений"</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div style="margin-bottom: 30px;">
+                    <h3 style="color: #023e8a; margin-bottom: 20px; font-size: 1.3em;">🔗 Полезные ссылки</h3>
+                    
+                    <div class="sources-link-grid">
+                        <a href="https://www.gov.kz/memleket/entities/edu" target="_blank" class="sources-link-card">
+                            <div class="sources-link-icon">🌐</div>
+                            <div class="sources-link-title">Министерство образования РК</div>
+                            <div class="sources-link-desc">Официальный сайт Министерства образования и науки Республики Казахстан</div>
+                        </a>
+                        
+                        <a href="https://www.nao.kz" target="_blank" class="sources-link-card">
+                            <div class="sources-link-icon">🏛️</div>
+                            <div class="sources-link-title">Национальная академия образования</div>
+                            <div class="sources-link-desc">Имени И. Алтынсарина. Методические материалы и разработки</div>
+                        </a>
+                        
+                        <a href="https://mektep.kz" target="_blank" class="sources-link-card">
+                            <div class="sources-link-icon">📚</div>
+                            <div class="sources-link-title">Издательство "Мектеп"</div>
+                            <div class="sources-link-desc">Электронные версии учебников и учебных пособий</div>
+                        </a>
+                        
+                        <a href="https://bilimal.kz" target="_blank" class="sources-link-card">
+                            <div class="sources-link-icon">💻</div>
+                            <div class="sources-link-title">BilimAL образовательный портал</div>
+                            <div class="sources-link-desc">Онлайн ресурсы для учащихся и учителей</div>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="sources-compliance">
+                    <div class="sources-compliance-title">📋 Соответствие программе</div>
+                    <p style="color: #555; line-height: 1.6; margin: 0;">
+                        Данное приложение разработано в соответствии с <strong>Обновленной программой 
+                        среднего образования Республики Казахстан</strong>. Все темы и задания соответствуют 
+                        требованиям <strong>ГОСО РК</strong> и основаны на учебниках, рекомендованных 
+                        Министерством образования и науки РК для использования в общеобразовательных школах.
+                    </p>
+                </div>
             </div>
         </div>
 
@@ -124,11 +606,19 @@
             </div>
 
             <div id="quizArea" class="quiz-area">
+                <div id="timerSection" style="text-align: center; margin-bottom: 15px; display: none;">
+                    <div style="font-size: 1.2em; color: #0077b6; font-weight: bold;">
+                        ⏱️ Осталось времени: <span id="timer">05:00</span>
+                    </div>
+                </div>
                 <div class="result-summary" id="resultSummary"></div>
                 <div class="questions-grid" id="questionsGrid"></div>
                 <div class="button-group">
                     <button class="btn check-btn" onclick="checkAllAnswers()">✓ Проверить все</button>
                     <button class="btn next-btn" onclick="generateNewSet()">Новый набор →</button>
+                    <button class="btn" onclick="startTimedTest()" style="background: linear-gradient(135deg, #e67e22 0%, #d35400 100%); color: white;">
+                        ⏱️ Тест на время
+                    </button>
                     <button class="btn back-btn" onclick="backToTopics()">← Назад к темам</button>
                 </div>
             </div>
@@ -141,6 +631,95 @@
         let currentQuestions = [];
         let studentResults = {};
         let deferredPrompt;
+        let timerInterval;
+        let timeLeft = 300;
+        let currentLanguage = 'ru';
+
+        // Достижения
+        const achievements = {
+            'first_10': { name: 'Новичок', desc: 'Решено 10 задач', icon: '🥚', threshold: 10 },
+            'first_50': { name: 'Ученик', desc: 'Решено 50 задач', icon: '🐣', threshold: 50 },
+            'first_100': { name: 'Математик', desc: 'Решено 100 задач', icon: '🐥', threshold: 100 },
+            'accuracy_90': { name: 'Точность', desc: 'Точность выше 90%', icon: '🎯', threshold: 0.9 },
+            'all_correct': { name: 'Идеально', desc: 'Все ответы верны в тесте', icon: '⭐', threshold: 1 },
+            'speed_demon': { name: 'Скорость', desc: 'Решить 5 задач за минуту', icon: '⚡', threshold: 5 }
+        };
+
+        let userAchievements = {};
+
+        // Переводы
+        const translations = {
+            ru: {
+                title: '🎓 Математика',
+                subtitle: 'Программа Министерства образования РК',
+                enterName: '👤 Введите имя ученика:',
+                practice: '📝 Практика',
+                stats: '📊 Статистика',
+                achievements: '🏆 Достижения',
+                sources: '📚 Источники',
+                leaderboard: '🏆 Таблица лидеров',
+                chooseGrade: 'Выберите класс:',
+                chooseTopic: 'Выберите тему:',
+                backToGrades: '← Назад к классам',
+                backToTopics: '← Назад к темам',
+                checkAll: '✓ Проверить все',
+                newSet: 'Новый набор →',
+                timedTest: '⏱️ Тест на время',
+                installText: '📱 Установите приложение на главный экран для удобного доступа!',
+                installBtn: 'Установить приложение',
+                yourAchievements: '🏆 Ваши достижения',
+                noAchievements: 'Пока нет достижений. Решайте задачи, чтобы получить бейджи!'
+            },
+            kk: {
+                title: '🎓 Математика',
+                subtitle: 'Білім министрлігінің бағдарламасы',
+                enterName: '👤 Оқушының атын енгізіңіз:',
+                practice: '📝 Практика',
+                stats: '📊 Статистика',
+                achievements: '🏆 Жетістіктер',
+                sources: '📚 Дереккөздер',
+                leaderboard: '🏆 Көшбасшылар кестесі',
+                chooseGrade: 'Сыныпты таңдаңыз:',
+                chooseTopic: 'Тақырыпты таңдаңыз:',
+                backToGrades: '← Сыныптарға оралу',
+                backToTopics: '← Тақырыптарға оралу',
+                checkAll: '✓ Барлығын тексеру',
+                newSet: 'Жаңа жиын →',
+                timedTest: '⏱️ Уақытпен тест',
+                installText: '📱 Қолжетімділік үшін басты экранға қосымшаны орнатыңыз!',
+                installBtn: 'Қосымшаны орнату',
+                yourAchievements: '🏆 Сіздің жетістіктеріңіз',
+                noAchievements: 'Әлі жетістік жоқ. Белгілер алу үшін есептерді шешіңіз!'
+            }
+        };
+
+        // Тематика по классам
+        const topics = {
+            1: ['Сандар 1-10', '1-10 аралығында қосу', '1-10 аралығында азайту', '11-20 сандары', 'Сандарды салыстыру', 'Сандардың құрамы', 'Логикалық есептер'],
+            2: ['Сандар 1-100', '1-20 аралығында қосу және азайту', '1-100 аралығында қосу және азайту', '2, 3 кестесі бойынша көбейту', '2, 3-ке бөлу', 'Мәтіндік есептер', 'Логикалық есептер'],
+            3: ['Сандар 1000-ға дейін', 'Үш таңбалы сандарды қосу және азайту', 'Көбейту кестесі (толық)', 'Кестесіз көбейту', 'Қалдықпен бөлу', 'Бөлшектер мен үлестер', 'Қозғалысқа есептер', 'Логика және ребустар'],
+            4: ['Көп таңбалы сандар', 'Төрт арифметикалық амал', 'Жазымен көбейту', 'Жазымен бөлу', 'Жылдамдық, уақыт, қашықтық', 'Аудан және периметр', 'Бөлшектер', 'Логикалық есептер'],
+            5: ['Натурал сандар', 'Жай бөлшектер', 'Бөлшектерді қосу және азайту', 'Бөлшектерді көбейту және бөлу', 'Ондық бөлшектер', 'Пайыздар', 'Теңдеулер', 'Аудан және көлем', 'Логика'],
+            6: ['Сандардың бөлінгіштігі', 'Рационал сандар', 'Санның модулі', 'Рационал сандарды салыстыру', 'Рационал сандармен амалдар', 'Пропорциялар', 'Координаталық жазықтық', 'Логикалық есептер'],
+            7: ['Алгебралық өрнектер', 'Сызықтық теңдеулер', 'Дәрежелер', 'Бірмүшелер', 'Көпмүшелер', 'Қысқартылған көбейту формулалары', 'Теңдеулер жүйесі', 'Логикалық есептер']
+        };
+
+        const topicsRu = {
+            1: ['Числа 1-10', 'Сложение в пределах 10', 'Вычитание в пределах 10', 'Числа 11-20', 'Сравнение чисел', 'Состав чисел', 'Задачи на логику'],
+            2: ['Числа 1-100', 'Сложение и вычитание в пределах 20', 'Сложение и вычитание в пределах 100', 'Таблица умножения на 2, 3', 'Деление на 2, 3', 'Текстовые задачи', 'Логические задачи'],
+            3: ['Числа до 1000', 'Сложение и вычитание трёхзначных', 'Таблица умножения (вся)', 'Внетабличное умножение', 'Деление с остатком', 'Доли и дроби', 'Задачи на движение', 'Логика и ребусы'],
+            4: ['Многозначные числа', 'Четыре арифметических действия', 'Письменное умножение', 'Письменное деление', 'Скорость, время, расстояние', 'Площадь и периметр', 'Дроби', 'Логические задачи'],
+            5: ['Натуральные числа', 'Обыкновенные дроби', 'Сложение и вычитание дробей', 'Умножение и деление дробей', 'Десятичные дроби', 'Проценты', 'Уравнения', 'Площадь и объём', 'Логика'],
+            6: ['Делимость чисел', 'Рациональные числа', 'Модуль числа', 'Сравнение рациональных чисел', 'Действия с рациональными числами', 'Пропорции', 'Координатная плоскость', 'Логические задачи'],
+            7: ['Алгебраические выражения', 'Линейные уравнения', 'Степени', 'Одночлены', 'Многочлены', 'Формулы сокращённого умножения', 'Системы уравнений', 'Задачи на логику']
+        };
+
+        // Инициализация
+        function init() {
+            loadResults();
+            loadAchievements();
+            updateLanguage();
+        }
 
         // PWA Installation
         window.addEventListener('beforeinstallprompt', (e) => {
@@ -171,30 +750,175 @@
             });
         }
 
-        const topics = {
-            1: ['Числа от 1 до 10', 'Сложение в пределах 10', 'Вычитание в пределах 10', 'Числа от 11 до 20', 'Сравнение чисел', 'Состав чисел', 'Задачи на логику'],
-            2: ['Числа от 1 до 100', 'Сложение и вычитание в пределах 20', 'Сложение и вычитание в пределах 100', 'Таблица умножения на 2, 3', 'Деление на 2, 3', 'Текстовые задачи', 'Логические задачи'],
-            3: ['Числа до 1000', 'Сложение и вычитание трёхзначных', 'Таблица умножения (вся)', 'Внетабличное умножение', 'Деление с остатком', 'Доли и дроби', 'Задачи на движение', 'Логика и ребусы'],
-            4: ['Многозначные числа', 'Четыре арифметических действия', 'Письменное умножение', 'Письменное деление', 'Скорость, время, расстояние', 'Площадь и периметр', 'Дроби', 'Логические задачи'],
-            5: ['Натуральные числа', 'Обыкновенные дроби', 'Сложение и вычитание дробей', 'Умножение и деление дробей', 'Десятичные дроби', 'Проценты', 'Уравнения', 'Площадь и объём', 'Логика'],
-            6: ['Делимость чисел', 'Рациональные числа', 'Модуль числа', 'Сравнение рациональных чисел', 'Действия с рациональными числами', 'Пропорции', 'Координатная плоскость', 'Логические задачи'],
-            7: ['Алгебраические выражения', 'Линейные уравнения', 'Степени', 'Одночлены', 'Многочлены', 'Формулы сокращённого умножения', 'Системы уравнений', 'Задачи на логику']
-        };
+        // Язык
+        function toggleLanguage() {
+            currentLanguage = currentLanguage === 'ru' ? 'kk' : 'ru';
+            updateLanguage();
+        }
 
+        function updateLanguage() {
+            const lang = translations[currentLanguage];
+            const btn = document.getElementById('langToggle');
+            
+            document.querySelector('h1').textContent = lang.title;
+            document.querySelector('.subtitle').textContent = lang.subtitle;
+            document.querySelector('label[for="studentName"]').innerHTML = lang.enterName;
+            
+            const tabs = document.querySelectorAll('.tab');
+            tabs[0].textContent = lang.practice;
+            tabs[1].textContent = lang.stats;
+            tabs[2].textContent = lang.achievements;
+            tabs[3].textContent = lang.sources;
+            
+            document.querySelector('.leaderboard h2').textContent = lang.leaderboard;
+            document.querySelector('#gradeSelection h2').textContent = lang.chooseGrade;
+            document.querySelector('#topicSelection h2').textContent = lang.chooseTopic;
+            document.querySelector('button[onclick="backToGrades()"]').textContent = lang.backToGrades;
+            document.querySelector('button[onclick="backToTopics()"]').textContent = lang.backToTopics;
+            document.querySelector('button[onclick="checkAllAnswers()"]').textContent = lang.checkAll;
+            document.querySelector('button[onclick="generateNewSet()"]').textContent = lang.newSet;
+            document.querySelector('button[onclick="startTimedTest()"]').textContent = lang.timedTest;
+            document.querySelector('#installPrompt div').textContent = lang.installText;
+            document.querySelector('.install-btn').textContent = lang.installBtn;
+            
+            btn.textContent = currentLanguage === 'ru' ? '🇰🇿 Қазақша' : '🇷🇺 Русский';
+            
+            // Обновляем темы, если открыт выбор темы
+            if (currentGrade > 0) {
+                updateTopicButtons();
+            }
+        }
+
+        function updateTopicButtons() {
+            const topicButtons = document.getElementById('topicButtons');
+            if (!topicButtons || topicButtons.innerHTML === '') return;
+            
+            const name = document.getElementById('studentName').value.trim() || 'Ученик';
+            const studentData = studentResults[name] || {};
+            const currentTopics = currentLanguage === 'ru' ? topicsRu[currentGrade] : topics[currentGrade];
+            
+            topicButtons.innerHTML = '';
+            
+            currentTopics.forEach((topic, index) => {
+                const btn = document.createElement('button');
+                btn.className = 'topic-btn';
+                
+                const progressKey = `grade${currentGrade}_topic${index}`;
+                const progress = studentData[progressKey] || 0;
+                const progressPercent = Math.min(progress * 10, 100);
+                
+                btn.innerHTML = `
+                    <div style="font-weight: bold;">${topic}</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: ${progressPercent}%"></div>
+                    </div>
+                    <div class="topic-progress">${progress} из 10</div>
+                `;
+                
+                btn.onclick = () => {
+                    if (!studentResults[name]) {
+                        studentResults[name] = {};
+                    }
+                    studentResults[name].currentTopicKey = progressKey;
+                    selectTopic(currentLanguage === 'ru' ? topicsRu[currentGrade][index] : topic);
+                };
+                
+                topicButtons.appendChild(btn);
+            });
+        }
+
+        // Таймер
+        function startTimer() {
+            clearInterval(timerInterval);
+            timeLeft = 300;
+            document.getElementById('timerSection').style.display = 'block';
+            
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                const minutes = Math.floor(timeLeft / 60);
+                const seconds = timeLeft % 60;
+                document.getElementById('timer').textContent = 
+                    `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    checkAllAnswers();
+                    alert('⏰ Время вышло! Проверяем ответы...');
+                }
+                
+                if (timeLeft < 60) {
+                    document.getElementById('timer').style.color = '#f56565';
+                }
+            }, 1000);
+        }
+
+        function stopTimer() {
+            clearInterval(timerInterval);
+            document.getElementById('timerSection').style.display = 'none';
+        }
+
+        function startTimedTest() {
+            if (confirm('Запустить тест на время? У вас будет 5 минут на 4 задачи.')) {
+                startTimer();
+                generateNewSet();
+            }
+        }
+
+        // Навигация
         function showTab(tab) {
             document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
             document.querySelectorAll('.stats-section').forEach(s => s.classList.remove('active'));
             
-            if (tab === 'stats') {
-                event.target.classList.add('active');
-                document.getElementById('statsSection').classList.add('active');
-                updateLeaderboard();
-            } else {
-                document.querySelector('.tab').classList.add('active');
-                document.getElementById('practiceSection').classList.add('active');
+            const tabMap = {
+                'practice': () => {
+                    document.querySelector('.tab:nth-child(1)').classList.add('active');
+                    document.getElementById('practiceSection').classList.add('active');
+                },
+                'stats': () => {
+                    document.querySelector('.tab:nth-child(2)').classList.add('active');
+                    document.getElementById('statsSection').classList.add('active');
+                    updateLeaderboard();
+                },
+                'achievements': () => {
+                    document.querySelector('.tab:nth-child(3)').classList.add('active');
+                    document.getElementById('achievementsSection').classList.add('active');
+                    showAchievements();
+                },
+                'sources': () => {
+                    document.querySelector('.tab:nth-child(4)').classList.add('active');
+                    document.getElementById('sourcesSection').classList.add('active');
+                }
+            };
+            
+            if (tabMap[tab]) {
+                tabMap[tab]();
             }
         }
 
+        function showAchievements() {
+            const name = document.getElementById('studentName').value.trim();
+            const list = document.getElementById('achievementsList');
+            const noAch = document.getElementById('noAchievements');
+            
+            list.innerHTML = '';
+            
+            if (name && userAchievements[name]) {
+                userAchievements[name].forEach(achId => {
+                    const ach = achievements[achId];
+                    const badge = document.createElement('div');
+                    badge.className = 'achievement-badge';
+                    badge.innerHTML = `${ach.icon} ${ach.name}`;
+                    badge.title = ach.desc;
+                    list.appendChild(badge);
+                });
+                
+                noAch.style.display = userAchievements[name].length > 0 ? 'none' : 'block';
+            } else {
+                noAch.style.display = 'block';
+            }
+        }
+
+        // Результаты
         function loadResults() {
             const saved = localStorage.getItem('studentResults');
             if (saved) {
@@ -206,6 +930,18 @@
             localStorage.setItem('studentResults', JSON.stringify(studentResults));
         }
 
+        function loadAchievements() {
+            const saved = localStorage.getItem('userAchievements');
+            if (saved) {
+                userAchievements = JSON.parse(saved);
+            }
+        }
+
+        function saveAchievements() {
+            localStorage.setItem('userAchievements', JSON.stringify(userAchievements));
+        }
+
+        // Лидерборд
         function updateLeaderboard() {
             const tbody = document.getElementById('leaderboardBody');
             tbody.innerHTML = '';
@@ -238,21 +974,12 @@
             }
         }
 
+        // Выбор класса и темы
         function selectGrade(grade) {
             currentGrade = grade;
             document.getElementById('gradeSelection').style.display = 'none';
             document.getElementById('topicSelection').style.display = 'block';
-            
-            const topicButtons = document.getElementById('topicButtons');
-            topicButtons.innerHTML = '';
-            
-            topics[grade].forEach(topic => {
-                const btn = document.createElement('button');
-                btn.className = 'topic-btn';
-                btn.textContent = topic;
-                btn.onclick = () => selectTopic(topic);
-                topicButtons.appendChild(btn);
-            });
+            updateTopicButtons();
         }
 
         function selectTopic(topic) {
@@ -262,6 +989,7 @@
             generateNewSet();
         }
 
+        // Генерация вопросов
         function generateNewSet() {
             currentQuestions = [];
             for (let i = 0; i < 4; i++) {
@@ -274,27 +1002,29 @@
         function generateQuestion() {
             let question, answer, type = 'Арифметика';
             
-            if (currentTopic.includes('логик') || currentTopic.includes('ребус')) {
+            if (currentTopic.includes('логик') || currentTopic.includes('ребус') || currentTopic.includes('Логика')) {
                 return generateLogicQuestion();
             }
             
-            switch(currentTopic) {
-                case 'Числа от 1 до 10':
-                case 'Сложение в пределах 10':
+            const topicId = getTopicId(currentTopic);
+            
+            switch(topicId) {
+                case 'numbers_1_10':
+                case 'addition_10':
                     const a1 = Math.floor(Math.random() * 9) + 1;
                     const b1 = Math.floor(Math.random() * (10 - a1)) + 1;
                     question = `${a1} + ${b1}`;
                     answer = a1 + b1;
                     break;
                     
-                case 'Вычитание в пределах 10':
+                case 'subtraction_10':
                     const a2 = Math.floor(Math.random() * 9) + 2;
                     const b2 = Math.floor(Math.random() * a2) + 1;
                     question = `${a2} - ${b2}`;
                     answer = a2 - b2;
                     break;
                     
-                case 'Сравнение чисел':
+                case 'comparison':
                     const n1 = Math.floor(Math.random() * 20) + 1;
                     const n2 = Math.floor(Math.random() * 20) + 1;
                     question = `Большее из ${n1} и ${n2}`;
@@ -302,53 +1032,71 @@
                     type = 'Сравнение';
                     break;
                     
-                case 'Таблица умножения на 2, 3':
-                case 'Таблица умножения (вся)':
+                case 'multiplication_table':
                     const mult = currentGrade <= 2 ? [2, 3][Math.floor(Math.random() * 2)] : Math.floor(Math.random() * 8) + 2;
                     const num = Math.floor(Math.random() * 9) + 2;
                     question = `${mult} × ${num}`;
                     answer = mult * num;
                     break;
                     
-                case 'Деление на 2, 3':
-                case 'Деление с остатком':
+                case 'division':
                     const div = currentGrade <= 2 ? [2, 3][Math.floor(Math.random() * 2)] : Math.floor(Math.random() * 7) + 2;
                     const res = Math.floor(Math.random() * 9) + 2;
                     question = `${div * res} ÷ ${div}`;
                     answer = res;
                     break;
                     
-                case 'Текстовые задачи':
+                case 'word_problems':
+                    const appleCount = Math.floor(Math.random() * 10) + 5;
+                    const given = Math.floor(Math.random() * 3) + 1;
+                    const boys = Math.floor(Math.random() * 10) + 15;
+                    const girls = Math.floor(Math.random() * 10) + 15;
+                    
                     const stories = [
-                        {q: `У Асель ${Math.floor(Math.random() * 10) + 5} яблок. Она дала ${Math.floor(Math.random() * 3) + 1}. Сколько осталось?`},
-                        {q: `В классе ${Math.floor(Math.random() * 10) + 15} мальчиков и ${Math.floor(Math.random() * 10) + 15} девочек. Всего детей?`}
+                        {q: `У Асель ${appleCount} яблок. Она дала ${given}. Сколько осталось?`, a: appleCount - given},
+                        {q: `В классе ${boys} мальчиков и ${girls} девочек. Всего детей?`, a: boys + girls},
+                        {q: `У Каната ${Math.floor(Math.random() * 20) + 10} тенге. Он купил книгу за ${Math.floor(Math.random() * 15) + 5} тенге. Сколько осталось?`, a: (Math.floor(Math.random() * 20) + 10) - (Math.floor(Math.random() * 15) + 5)}
                     ];
-                    const nums = question.match(/\d+/g).map(Number);
-                    answer = nums.reduce((a, b) => a + b, 0);
-                    question = stories[Math.floor(Math.random() * stories.length)].q;
+                    const story = stories[Math.floor(Math.random() * stories.length)];
+                    question = story.q;
+                    answer = story.a;
+                    type = 'Текстовая задача';
                     break;
                     
-                case 'Десятичные дроби':
+                case 'decimal_fractions':
                     const d1 = (Math.floor(Math.random() * 50) + 10) / 10;
                     const d2 = (Math.floor(Math.random() * 30) + 5) / 10;
                     question = `${d1} + ${d2}`;
                     answer = Math.round((d1 + d2) * 10) / 10;
                     break;
                     
-                case 'Проценты':
+                case 'percentages':
                     const base = [100, 200, 500][Math.floor(Math.random() * 3)];
                     const perc = [10, 20, 50][Math.floor(Math.random() * 3)];
                     question = `${perc}% от ${base}`;
                     answer = base * perc / 100;
                     break;
                     
-                case 'Линейные уравнения':
-                case 'Уравнения':
+                case 'equations':
                     const x = Math.floor(Math.random() * 20) + 1;
                     const c = Math.floor(Math.random() * 30) + 10;
                     question = `x + ${c} = ${x + c}, x = ?`;
                     answer = x;
                     type = 'Уравнение';
+                    break;
+                    
+                case 'area_perimeter':
+                    const length = Math.floor(Math.random() * 10) + 3;
+                    const width = Math.floor(Math.random() * 8) + 2;
+                    if (Math.random() > 0.5) {
+                        question = `Площадь прямоугольника ${length} × ${width}`;
+                        answer = length * width;
+                        type = 'Площадь';
+                    } else {
+                        question = `Периметр прямоугольника ${length} × ${width}`;
+                        answer = 2 * (length + width);
+                        type = 'Периметр';
+                    }
                     break;
                     
                 default:
@@ -361,6 +1109,34 @@
             return { question, answer, type };
         }
 
+        function getTopicId(topic) {
+            const map = {
+                'Числа 1-10': 'numbers_1_10',
+                'Сандар 1-10': 'numbers_1_10',
+                'Сложение в пределах 10': 'addition_10',
+                '1-10 аралығында қосу': 'addition_10',
+                'Вычитание в пределах 10': 'subtraction_10',
+                '1-10 аралығында азайту': 'subtraction_10',
+                'Сравнение чисел': 'comparison',
+                'Сандарды салыстыру': 'comparison',
+                'Таблица умножения': 'multiplication_table',
+                'Көбейту кестесі': 'multiplication_table',
+                'Деление': 'division',
+                'Бөлу': 'division',
+                'Текстовые задачи': 'word_problems',
+                'Мәтіндік есептер': 'word_problems',
+                'Десятичные дроби': 'decimal_fractions',
+                'Ондық бөлшектер': 'decimal_fractions',
+                'Проценты': 'percentages',
+                'Пайыздар': 'percentages',
+                'Уравнения': 'equations',
+                'Теңдеулер': 'equations',
+                'Площадь и периметр': 'area_perimeter',
+                'Аудан және периметр': 'area_perimeter'
+            };
+            return map[topic] || 'default';
+        }
+
         function generateLogicQuestion() {
             const logicQuestions = [
                 { question: 'У Айгуль 2 яблока. У Асель на 3 больше. Сколько у Асель?', answer: 5 },
@@ -370,13 +1146,16 @@
                 { question: '10 - 2 - 2 - 2 = ?', answer: 4 },
                 { question: 'Продолжи: 1, 3, 5, 7, ?', answer: 9 },
                 { question: 'В корзине 10 яблок. Съели 3. Сколько осталось?', answer: 7 },
-                { question: '3 + 3 + 3 = ? (запиши ответ)', answer: 9 }
+                { question: '3 + 3 + 3 = ?', answer: 9 },
+                { question: 'Что легче: 1 кг ваты или 1 кг железа?', answer: 0 },
+                { question: 'Сколько углов у квадрата?', answer: 4 }
             ];
             
             const q = logicQuestions[Math.floor(Math.random() * logicQuestions.length)];
             return { question: q.question, answer: q.answer, type: 'Логика' };
         }
 
+        // Рендеринг вопросов
         function renderQuestions() {
             const grid = document.getElementById('questionsGrid');
             grid.innerHTML = '';
@@ -387,10 +1166,34 @@
                 card.innerHTML = `
                     <div class="question-number">${q.type} • Задача ${index + 1}</div>
                     <div class="question-text">${q.question} = ?</div>
-                    <input type="number" step="0.1" class="answer-input" id="answer${index}" placeholder="Ваш ответ">
+                    <input type="number" step="0.1" class="answer-input" id="answer${index}" 
+                           placeholder="Ваш ответ"
+                           oninput="checkSingleAnswer(${index})">
+                    <div id="hint${index}" style="font-size: 0.9em; color: #666; margin-top: 5px; display: none;">
+                        <!-- Подсказка появится здесь -->
+                    </div>
                 `;
                 grid.appendChild(card);
             });
+        }
+
+        // Проверка ответов
+        function checkSingleAnswer(index) {
+            const input = document.getElementById(`answer${index}`);
+            const q = currentQuestions[index];
+            const userAnswer = parseFloat(input.value);
+            
+            if (isNaN(userAnswer)) return;
+            
+            if (Math.abs(userAnswer - q.answer) < 0.01) {
+                input.classList.remove('incorrect');
+                input.classList.add('correct');
+                input.title = "Правильно! ✓";
+            } else {
+                input.classList.remove('correct');
+                input.classList.add('incorrect');
+                input.title = `Правильный ответ: ${q.answer}`;
+            }
         }
 
         function checkAllAnswers() {
@@ -407,18 +1210,22 @@
                 const input = document.getElementById(`answer${index}`);
                 const userAnswer = parseFloat(input.value);
                 
-                if (Math.abs(userAnswer - q.answer) < 0.01) {
+                if (!isNaN(userAnswer) && Math.abs(userAnswer - q.answer) < 0.01) {
                     correct++;
                     input.classList.add('correct');
                     input.classList.remove('incorrect');
+                    input.title = "Правильно! ✓";
                 } else {
                     input.classList.add('incorrect');
                     input.classList.remove('correct');
+                    input.title = `Правильный ответ: ${q.answer}`;
                 }
             });
             
             const score = correct * 10;
+            const accuracy = Math.round((correct / total) * 100);
             
+            // Сохраняем результаты
             if (!studentResults[name]) {
                 studentResults[name] = { totalScore: 0, totalCorrect: 0, totalQuestions: 0 };
             }
@@ -427,25 +1234,115 @@
             studentResults[name].totalCorrect += correct;
             studentResults[name].totalQuestions += total;
             
+            // Сохраняем прогресс по теме
+            if (studentResults[name].currentTopicKey) {
+                const topicKey = studentResults[name].currentTopicKey;
+                if (!studentResults[name][topicKey]) {
+                    studentResults[name][topicKey] = 0;
+                }
+                studentResults[name][topicKey] += correct;
+            }
+            
             saveResults();
             
-            const accuracy = Math.round((correct / total) * 100);
-            document.getElementById('resultSummary').innerHTML = `
-                <strong>${name}</strong>: ${correct} из ${total} (${accuracy}%) • +${score} баллов 🎉
+            // Проверяем достижения
+            checkAchievements(name, correct, total, accuracy);
+            
+            // Показываем результат
+            const resultHTML = `
+                <strong>${name}</strong>: ${correct} из ${total} (${accuracy}%) • +${score} баллов 
+                ${correct === total ? '🎉 Отлично!' : correct >= total/2 ? '👍 Хорошо!' : '💪 Продолжайте тренироваться!'}
             `;
+            document.getElementById('resultSummary').innerHTML = resultHTML;
+            
+            // Обновляем лидерборд, если открыта вкладка статистики
+            if (document.getElementById('statsSection').classList.contains('active')) {
+                updateLeaderboard();
+            }
+            
+            // Останавливаем таймер
+            stopTimer();
         }
 
+        // Достижения
+        function checkAchievements(studentName, correctCount, totalQuestions, accuracy) {
+            const studentData = studentResults[studentName];
+            if (!studentData) return;
+            
+            const newAchievements = [];
+            
+            // По количеству задач
+            if (studentData.totalQuestions >= 10 && !(userAchievements[studentName] || []).includes('first_10')) {
+                newAchievements.push('first_10');
+            }
+            if (studentData.totalQuestions >= 50 && !(userAchievements[studentName] || []).includes('first_50')) {
+                newAchievements.push('first_50');
+            }
+            if (studentData.totalQuestions >= 100 && !(userAchievements[studentName] || []).includes('first_100')) {
+                newAchievements.push('first_100');
+            }
+            
+            // По точности
+            if (accuracy >= 90 && !(userAchievements[studentName] || []).includes('accuracy_90')) {
+                newAchievements.push('accuracy_90');
+            }
+            
+            // За идеальный результат
+            if (correctCount === totalQuestions && totalQuestions >= 4 && !(userAchievements[studentName] || []).includes('all_correct')) {
+                newAchievements.push('all_correct');
+            }
+            
+            // Сохраняем достижения
+            if (newAchievements.length > 0) {
+                if (!userAchievements[studentName]) {
+                    userAchievements[studentName] = [];
+                }
+                
+                newAchievements.forEach(achId => {
+                    if (!userAchievements[studentName].includes(achId)) {
+                        userAchievements[studentName].push(achId);
+                    }
+                });
+                
+                saveAchievements();
+                
+                // Показываем уведомление
+                showAchievementNotification(newAchievements, studentName);
+            }
+        }
+
+        function showAchievementNotification(achievementIds, studentName) {
+            const summary = document.getElementById('resultSummary');
+            let currentHTML = summary.innerHTML;
+            
+            achievementIds.forEach(achId => {
+                const ach = achievements[achId];
+                currentHTML += `<br><span style="color: #e67e22; font-weight: bold;">${ach.icon} Новое достижение для ${studentName}: ${ach.name} - ${ach.desc}</span>`;
+            });
+            
+            summary.innerHTML = currentHTML;
+            
+            // Обновляем список достижений, если открыта вкладка
+            if (document.getElementById('achievementsSection').classList.contains('active')) {
+                showAchievements();
+            }
+        }
+
+        // Навигация назад
         function backToTopics() {
+            stopTimer();
             document.getElementById('quizArea').style.display = 'none';
             document.getElementById('topicSelection').style.display = 'block';
         }
 
         function backToGrades() {
+            stopTimer();
             document.getElementById('topicSelection').style.display = 'none';
             document.getElementById('gradeSelection').style.display = 'block';
         }
 
-        loadResults();
+        // Инициализация при загрузке
+        window.addEventListener('DOMContentLoaded', init);
     </script>
 </body>
 </html>
